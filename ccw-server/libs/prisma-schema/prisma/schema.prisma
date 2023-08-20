@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:password@localhost:5432/ccw?schema=public"
+  // url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id    Int     @default(autoincrement()) @id  @map("id")
+  email String  @unique @map("email")
+  password  String @map("password")
+  timestamp DateTime @default(now()) @map("timestamp") @db.Timestamptz()
+  
+  profile Profile? 
+
+  posts Post[]  
+
+  @@map("user")
+}
+
+
+model Profile {
+   id Int  @default(autoincrement()) @id @map("id")
+   name  String? @map("name")
+   bio String? @map("bio")
+   avatar String? @map("avatar")
+   userId Int @unique @map("user_id")
+
+   user    User    @relation(fields: [userId], references: [id],onDelete: Cascade)
+   @@map("profile")
+   
+}
+
+
+
+model Post {
+  id        Int      @default(autoincrement()) @id @map("id")
+  title     String @map("title")
+  content   String? @map("content")
+  imageUrl  String  @map("image_url")
+  latitude  Float   @map("latitude")
+  longitude Float   @map("longitude")
+  published Boolean? @default(false) @map("published")
+  timestamp DateTime @default(now()) @map("timestamp") @db.Timestamptz() 
+  authorId  Int  @map("author_id")
+
+  author    User?    @relation(fields: [authorId], references: [id],onDelete: Cascade)
+
+  @@map("post")
+}
