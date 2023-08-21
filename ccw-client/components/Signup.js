@@ -3,13 +3,14 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import { API_URL } from '../consts/consts';
 
 const Signup = ({ navigation }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://192.168.1.40:3000/api/user/signup', {
+      const response = await axios.post(`${API_URL}/api/user/signup`, {
         email: data.email,
         password: data.password,
       });

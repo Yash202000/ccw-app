@@ -56,7 +56,7 @@ const App = () => {
         />
 
         <Stack.Screen
-            name="CreatePost"
+            name="Createpost"
             component={CreatePost}
             options={({ navigation }) => ({
               headerTitle: 'CCW', // Set the custom header title

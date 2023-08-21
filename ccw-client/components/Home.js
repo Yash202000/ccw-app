@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator ,Linking} from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import axios from 'axios';
+import { API_URL } from '../consts/consts';
+import RefreshButton from '../Buttons/RefreshButton';
 
-const Home = () => {
+
+const Home = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -11,9 +14,21 @@ const Home = () => {
     fetchPosts();
   }, []);
 
+  
+  const handleRefresh = async ()=>{
+    try {
+      setLoading(true);
+      fetchPosts()
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      setLoading(false);
+    }
+
+  }
+
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://192.168.1.40:3000/api/post');
+      const response = await axios.get(`${API_URL}/api/post`);
       setPosts(response.data);
       setLoading(false);
     } catch (error) {
@@ -57,10 +72,11 @@ const Home = () => {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => navigation.navigate('CreatePost')}
+          onPress={() => navigation.navigate('Createpost')}
         >
           <Ionicons name="add-circle-outline" size={32} color="#3498db" />
         </TouchableOpacity>
+        <RefreshButton onPress={handleRefresh} />
       </View>
     </View>
   );

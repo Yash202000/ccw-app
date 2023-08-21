@@ -3,13 +3,16 @@ import { View, Text, TextInput, Button, StyleSheet,TouchableHighlight } from 're
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import { API_URL } from '../consts/consts';
+
 
 const Login = ({ navigation }) => {
+  
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://192.168.1.40:3000/api/user/signin', {
+      const response = await axios.post(`${API_URL}/api/user/signin`, {
         email: data.email,
         password: data.password,
       });
