@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator ,Linking} from 'react-native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons'; 
 import axios from 'axios';
 import { API_URL } from '../consts/consts';
 import RefreshButton from '../Buttons/RefreshButton';
+import Sidebar from './SideBar';
 
 
-const Home = ({ navigation }) => {
+const Drawer = createDrawerNavigator();
+
+
+const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -132,5 +137,21 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
+
+
+
+
+const Home = ({ navigation }) => {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <Sidebar {...props} />}
+      initialRouteName="HomeScreen"
+    >
+      <Drawer.Screen 
+      name="HomeScreen" 
+      component={HomeScreen} />
+    </Drawer.Navigator>
+  );
+};
 
 export default Home;

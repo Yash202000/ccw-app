@@ -17,7 +17,7 @@ model User {
   password  String @map("password")
   timestamp DateTime @default(now()) @map("timestamp") @db.Timestamptz()
   
-  profile Profile? 
+  profile UserProfile? 
 
   posts Post[]  
 
@@ -25,15 +25,19 @@ model User {
 }
 
 
-model Profile {
+model UserProfile {
    id Int  @default(autoincrement()) @id @map("id")
-   name  String? @map("name")
-   bio String? @map("bio")
+   firstName  String? @map("first_name")
+   LirstName  String? @map("last_name")
+   phoneNumber String? @map("phone_number")
+   addressLine1 String? @map("address_line_1")
+   addressLine2 String? @map("address_line_2")
    avatar String? @map("avatar")
+   
    userId Int @unique @map("user_id")
 
    user    User    @relation(fields: [userId], references: [id],onDelete: Cascade)
-   @@map("profile")
+   @@map("user_profile")
    
 }
 
