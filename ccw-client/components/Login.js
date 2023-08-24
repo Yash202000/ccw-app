@@ -19,7 +19,12 @@ const Login = ({ navigation }) => {
 
       if (response.status === 201) {
         // Save password to AsyncStorage on successful Login
-        await AsyncStorage.setItem('savedPassword', data.password);
+        await AsyncStorage.removeItem('user_id');
+        await AsyncStorage.removeItem('user_email');
+        console.log('user_id',response.data.id);
+        await AsyncStorage.setItem('user_id',response.data.id );
+        await AsyncStorage.setItem('user_email',response.data.email)
+        
         navigation.navigate('Home');
       }
     } catch (error) {

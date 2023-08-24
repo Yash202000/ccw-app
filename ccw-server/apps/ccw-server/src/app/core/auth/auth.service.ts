@@ -25,20 +25,24 @@ export class AuthService {
     
     async validateUserRequest(request: { headers: { [x: string]: string } }) {
         const id = request.headers['id'];
-        const password = request.headers['password'];
-        if (id == undefined || password == undefined) {
+        const email = request.headers['email'];
+        if (id == undefined || email == undefined) {
             return false;
         }
         const user = await this.prismaService.user.findFirst({
             where: {
-                id: Number(id)
+                id: Number(id),
+                email: email
             },
         });
-        if (user == undefined) {
+        if (!user) {
             return false;
         }
-        return await this.comparePasswords(password, user.password);
+        return true
+        
     }
+
+
 
     
 }

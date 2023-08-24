@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { PrismaClient ,Prisma,User} from '@prisma/client'
 import { AuthService } from '../core/auth/auth.service';
-import { CreateUserDto, UserResponseDto } from './dto/user.dto';
+import { CreateUserDto, LoginUserResponse, UserResponseDto } from './dto/user.dto';
 
 
 @Injectable()
@@ -64,6 +64,12 @@ export class UserService {
       },
     });
     if(!user) throw new HttpException("User creation error",HttpStatus.BAD_REQUEST);
+    const profile = await this.prismaService.userProfile.create({
+      data: {
+        userId: Number(user.id)
+      }
+    })
+
     return {
         id: user.id,
         email: user.email,
@@ -72,7 +78,7 @@ export class UserService {
   }
 
   
-  async loginUser(userDto: CreateUserDto): Promise<UserResponseDto> {
+  async loginUser(userDto: CreateUserDto): Promise<LoginUserResponse> {
 
     // const userPassword = await this.authService.hashPassword(userDto.password);
     // console.log(userPassword);
@@ -87,10 +93,18 @@ export class UserService {
     const usrpass = this.authService.comparePasswords(userDto.password,user.password);
 
     if(!usrpass) throw new HttpException("Incorrect password",HttpStatus.NOT_FOUND);
+    const user_profile = await this.prismaService.userProfile.findFirst({
+      where: {
+        userId: user.id
+      }
+    })
+    
+    if(!user_profile) throw new HttpException("profile not found while login",HttpStatus.NOT_FOUND);
+    
     return {
-        id: user.id,
+        id: String(user.id),
         email: user.email,
-        timestamp: user.timestamp
+        timestamp: String(user.timestamp)
     }
   }
 

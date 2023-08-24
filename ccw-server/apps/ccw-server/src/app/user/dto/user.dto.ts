@@ -11,3 +11,9 @@ export class UserResponseDto{
     @ApiProperty()  email: string
     @ApiProperty() timestamp: Date
 }
+
+export class LoginUserResponse{
+    @ApiProperty() id: string
+    @ApiProperty()  email: string
+    @ApiProperty() timestamp: string
+}

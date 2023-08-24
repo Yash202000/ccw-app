@@ -19,16 +19,17 @@ model User {
   
   profile UserProfile? 
 
-  posts Post[]  
+  posts Post[]
+  feedbacks UserFeedBack[]
 
-  @@map("user")
+  @@map("users")
 }
 
 
 model UserProfile {
    id Int  @default(autoincrement()) @id @map("id")
    firstName  String? @map("first_name")
-   LirstName  String? @map("last_name")
+   LastName  String? @map("last_name")
    phoneNumber String? @map("phone_number")
    addressLine1 String? @map("address_line_1")
    addressLine2 String? @map("address_line_2")
@@ -37,7 +38,7 @@ model UserProfile {
    userId Int @unique @map("user_id")
 
    user    User    @relation(fields: [userId], references: [id],onDelete: Cascade)
-   @@map("user_profile")
+   @@map("user_profiles")
    
 }
 
@@ -48,6 +49,7 @@ model Post {
   title     String @map("title")
   content   String? @map("content")
   imageUrl  String  @map("image_url")
+  city      String  @map("city")
   latitude  Float   @map("latitude")
   longitude Float   @map("longitude")
   published Boolean? @default(false) @map("published")
@@ -56,5 +58,16 @@ model Post {
 
   author    User?    @relation(fields: [authorId], references: [id],onDelete: Cascade)
 
-  @@map("post")
+  @@map("posts")
+}
+
+
+model UserFeedBack{
+   id        Int      @default(autoincrement()) @id @map("id")
+   rating    Int @map("rating")
+   feedback  String @map("feedback")
+   authorId  Int  @map("author_id")
+
+   author    User   @relation(fields: [authorId], references: [id],onDelete: Cascade)
+   @@map("user_feedbacks")
 }

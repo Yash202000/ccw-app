@@ -17,7 +17,7 @@ import {
     ApiTags,
   } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { CreateUserDto, UserResponseDto } from './dto/user.dto';
+import { CreateUserDto, LoginUserResponse, UserResponseDto } from './dto/user.dto';
 
 
 @ApiTags('user')
@@ -71,7 +71,7 @@ export class UserController {
     @Post('signin')
     async signinUser(
         @Body() userData: CreateUserDto,
-    ): Promise<UserResponseDto> {
+    ): Promise<LoginUserResponse> {
         return this.userService.loginUser(userData);
     }
 

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; // Import AntDesign icons
+import { AntDesign } from '@expo/vector-icons';
+import axios from 'axios'; // Import Axios for API calls
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL } from '../consts/consts';
 
 const RateUs = () => {
   const [rating, setRating] = useState(0);
@@ -10,14 +13,27 @@ const RateUs = () => {
     setRating(newRating);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (rating === 0) {
       Alert.alert('Please provide a rating', 'Please select a rating before submitting.');
     } else {
-      // Send the rating and feedback to your backend or perform any other necessary actions
-      Alert.alert('Thank you!', 'Your rating and feedback have been submitted.');
-      setRating(0);
-      setFeedback('');
+      const authorId = await AsyncStorage.getItem('user_id');
+      try {
+        const response = await axios.post(`${API_URL}/api/feedback`, {
+          rating: rating,
+          feedback :feedback,
+          authorId: Number(authorId), // Replace with the actual authorId
+        });
+
+        if (response.status === 201) {
+          Alert.alert('Thank you!', 'Your rating and feedback have been submitted.');
+          setRating(0);
+          setFeedback('');
+        }
+      } catch (error) {
+        console.error('Error submitting feedback:', error);
+        Alert.alert('Error', 'An error occurred while submitting feedback.');
+      }
     }
   };
 

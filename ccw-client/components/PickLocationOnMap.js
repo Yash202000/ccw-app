@@ -24,9 +24,9 @@ const PickLocationOnMap = ({ onSelectLocation }) => {
           <Marker coordinate={selectedLocation} />
         )}
       </MapView>
-      <View style={styles.confirmButtonContainer}>
+      {/* <View style={styles.confirmButtonContainer}>
         <Button title="Confirm" onPress={handleConfirm} />
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
-  confirmButtonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-  },
+  // confirmButtonContainer: {
+  //   position: 'absolute',
+  //   bottom: 20,
+  //   left: 20,
+  //   right: 20,
+  // },
 });
 
 export default PickLocationOnMap;

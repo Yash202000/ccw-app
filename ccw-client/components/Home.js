@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator ,Linking} from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator ,Linking,TextInput, Modal} from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons ,MaterialCommunityIcons} from '@expo/vector-icons'; 
 import axios from 'axios';
 import { API_URL } from '../consts/consts';
 import RefreshButton from '../Buttons/RefreshButton';
 import Sidebar from './SideBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Drawer = createDrawerNavigator();
@@ -14,8 +15,17 @@ const Drawer = createDrawerNavigator();
 const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
+  const [showSearchIcon, setShowSearchIcon] = useState(false);
+  const [isFilterVisible, setFilterVisible] = useState(false); // State to control filter options visibility
+  const [selectedFilters, setSelectedFilters] = useState({
+    city: false,
+    title: false,
+    content: true,
+  });
 
-  useEffect(() => {
+
+  useEffect(async () => {
     fetchPosts();
   }, []);
 
@@ -48,6 +58,26 @@ const HomeScreen = ({ navigation }) => {
     
   };
 
+  const handleSearchIconClick = () => {
+    console.log('Search Input:', searchText);
+  };
+
+
+  const handleFilterIconClick = () => {
+    setFilterVisible(true); // Show the filter options container
+  };
+
+  const handleFilterApply = () => {
+    // Apply filters based on selectedFilters object
+    // Fetch posts with applied filters
+    fetchPosts();
+    setFilterVisible(false); // Hide the filter options container after applying filters
+  };
+
+  const handleFilterClose = () => {
+    setFilterVisible(false); // Hide the filter options container
+  };
+
   const renderPostItem = ({ item }) => (
     <View style={styles.postContainer}>
       <Text style={styles.postTitle}>{item.title}</Text>
@@ -67,6 +97,86 @@ const HomeScreen = ({ navigation }) => {
 
   return (
    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+       
+       <TouchableOpacity onPress={handleFilterIconClick}>
+          <MaterialCommunityIcons name="filter" size={24} color="#3498db" />
+        </TouchableOpacity>
+
+        <TextInput
+          style={styles.searchInput}
+          placeholder={`Search by ${selectedFilters.city ? 'city' : selectedFilters.title ? 'title' : 'content'}...`}
+          value={searchText}
+          onChangeText={(text) => setSearchText(text)}
+          onFocus={() => setShowSearchIcon(true)}
+          onBlur={() => setShowSearchIcon(false)}
+        />
+      
+        <TouchableOpacity onPress={handleSearchIconClick}>
+          <Ionicons name="search" size={24} color="#3498db" />
+        </TouchableOpacity>
+
+      </View>
+      {isFilterVisible && (
+  <View style={styles.filterContainer}>
+    {/* Checkboxes for city, title, and upvotes */}
+    <TouchableOpacity
+      style={styles.closeIcon}
+      onPress={() => setFilterVisible(false)}
+    >
+      <Ionicons name="close" size={24} color="#ccc" />
+    </TouchableOpacity>
+
+    <View style={styles.checkboxGroup}>
+      <View style={styles.checkboxItem}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => setSelectedFilters({ title: false, content: false, city: true })}
+        >
+          {selectedFilters.city ? (
+            <Ionicons name="checkbox" size={24} color="#3498db" />
+          ) : (
+            <Ionicons name="checkbox-outline" size={24} color="#ccc" />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.checkboxLabel}>City</Text>
+      </View>
+
+      <View style={styles.checkboxItem}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => setSelectedFilters({ city: false, content: false, title:true })}
+        >
+          {selectedFilters.title ? (
+            <Ionicons name="checkbox" size={24} color="#3498db" />
+          ) : (
+            <Ionicons name="checkbox-outline" size={24} color="#ccc" />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.checkboxLabel}>Title</Text>
+      </View>
+      <View style={styles.checkboxItem}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => setSelectedFilters({ city: false,title: false, content: true })}
+        >
+          {selectedFilters.content ? (
+            <Ionicons name="checkbox" size={24} color="#3498db" />
+          ) : (
+            <Ionicons name="checkbox-outline" size={24} color="#ccc" />
+          )}
+        </TouchableOpacity>
+        <Text style={styles.checkboxLabel}>Content</Text>
+      </View>
+    </View>
+
+    {/* Apply button */}
+    <TouchableOpacity style={styles.applyIcon} onPress={handleFilterApply}>
+      <Ionicons name="checkmark" size={24} color="#3498db" />
+    </TouchableOpacity>
+  </View>
+)}
+         
       <FlatList
         data={posts}
         renderItem={renderPostItem}
@@ -87,7 +197,63 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  searchInput: {
+    flex: 1,
+  },
+  searchIcon: {
+    paddingLeft: 10,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  closeIcon: {
+    marginRight: 10,
+  },
+  applyIcon: {
+    marginLeft: 10,
+  },
+  checkboxGroup: {
+    flexDirection: 'row',
+  },
+  checkboxItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  checkbox: {
+    marginRight: 5,
+  },
+  checkboxLabel: {
+    fontSize: 16,
+  },
+  filterButton: {
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+  },
+  filterButtonText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
     padding: 20,

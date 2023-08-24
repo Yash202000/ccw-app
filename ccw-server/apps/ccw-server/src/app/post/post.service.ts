@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient,Prisma ,Post} from '@prisma/client';
-import { PostCreateDto, PostResponseDto } from './dto/post.dto';
+import { FilterPostsResponseDto, PostCreateDto, PostResponseDto } from './dto/post.dto';
 
 @Injectable()
 export class PostService {
@@ -34,6 +34,64 @@ export class PostService {
         orderBy,
       });
     }
+
+    async getFilteredPosts(
+      pageSize: number,
+      pageOffset: number,
+      name: string,
+      type: string,
+      sortBy: string,
+      sortOrder: 'asc' | 'desc'
+    ): Promise<FilterPostsResponseDto> {
+      const whereArray = [];
+      let whereQuery = {};
+  
+      if (name !== undefined) {
+        whereArray.push({ name: { contains: name } });
+      }
+  
+      if (type !== undefined) {
+        whereArray.push({ type: { contains: type } });
+      }
+  
+      if (whereArray.length > 0) {
+        if (whereArray.length > 1) {
+          whereQuery = { AND: whereArray };
+        } else {
+          whereQuery = whereArray[0];
+        }
+      }
+  
+      const sort = (sortBy ? sortBy : 'id').toString();
+      const order = sortOrder ? sortOrder : 'asc';
+      const size = pageSize ? pageSize : 10;
+      const offset = pageOffset ? pageOffset : 0;
+      const orderBy = { [sort]: order };
+      const count = await this.prismaService.post.count({
+        where: whereQuery,
+      });
+  
+      const posts = await this.prismaService.post.findMany({
+        // select: { id: true, name: true, type: true },
+        where: whereQuery,
+        take: Number(size),
+        skip: Number(size * offset),
+        orderBy,
+      });
+      return {
+        size: size,
+        number: offset,
+        total: count,
+        sort: [
+          {
+            by: sort,
+            order: order,
+          },
+        ],
+        content: posts,
+      };
+    }
+  
   
     createPost(data: PostCreateDto,file): Promise<PostResponseDto> {
       
@@ -48,6 +106,7 @@ export class PostService {
             title: data.title,
             content: data.content,
             imageUrl: imageurl,
+            city: data.city,
             latitude: parseFloat(data.latitude),
             longitude: parseFloat(data.longitude),
             published: Boolean(data.published),

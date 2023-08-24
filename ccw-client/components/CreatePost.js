@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity,ScrollView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
@@ -8,6 +8,7 @@ import axios from 'axios';
 import { API_URL } from '../consts/consts';
 
 import PickLocationOnMap from './PickLocationOnMap';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CreatePost = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
@@ -39,6 +40,7 @@ const CreatePost = ({ navigation }) => {
   };
 
   const handleLocationToggle = () => {
+    if(!isPickingLocation) getLocationAsync();
     setIsPickingLocation(!isPickingLocation);
   };
 
@@ -51,12 +53,14 @@ const CreatePost = ({ navigation }) => {
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
+      const user_id = await AsyncStorage.getItem('user_id');
       formData.append('title', data.title);
       formData.append('content', data.content);
+      formData.append('city', data.city);
       formData.append('published', 'true');
       formData.append('latitude', location.coords.latitude.toFixed(6));
       formData.append('longitude',location.coords.longitude.toFixed(6));
-      formData.append('authorId', 9);
+      formData.append('authorId', user_id);
       console.log()
       console.log()
       console.log(data.title,data.content,data.published,data.latitude,data.longitude,data.authorId,selectedImage.uri);
@@ -113,6 +117,7 @@ const CreatePost = ({ navigation }) => {
   
 
   return (
+    <ScrollView style={styles.container}>
     <View style={styles.container}>
       <Text style={styles.title}>Create Post</Text>
       <Controller
@@ -145,6 +150,21 @@ const CreatePost = ({ navigation }) => {
           />
         )}
       />
+      <Controller
+        control={control}
+        name="city"
+        rules={{ required: 'City is required' }}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={styles.titleInput}
+            placeholder="City"
+            onChangeText={onChange}
+            value={value}
+            multiline
+          />
+        )}
+      />
 
       {/* Toggle bar */}
       <View style={styles.toggleContainer}>
@@ -159,19 +179,21 @@ const CreatePost = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
+          <View>
+
       {/* Location selection */}
       {isPickingLocation && (
         <PickLocationOnMap onSelectLocation={handleLocationSelection} />
       )}
 
       
-      {!isPickingLocation && (
+      {/* {!isPickingLocation && (
         <TouchableOpacity style={styles.uploadButton} onPress={getLocationAsync}>
           <Text style={styles.buttonText}>Get Location</Text>
         </TouchableOpacity>
 
-      )}
-
+      )} */}
+      </View>
       {/* Image Upload */}
       <TouchableOpacity style={styles.uploadButton} onPress={openImagePicker}>
         <Text style={styles.buttonText}>Upload Image</Text>
@@ -203,6 +225,7 @@ const CreatePost = ({ navigation }) => {
         <Text style={styles.buttonText}>Publish</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 
