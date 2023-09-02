@@ -58,8 +58,28 @@ const HomeScreen = ({ navigation }) => {
     
   };
 
-  const handleSearchIconClick = () => {
+  const handleSearchIconClick = async () => {
     console.log('Search Input:', searchText);
+    let filterText = '';
+    if(selectedFilters.city) filterText = `?city=${searchText}`;
+    else if (selectedFilters.content) filterText = `?content=${searchText}`;
+    else if (selectedFilters.title) filterText = `?title=${searchText}`
+    
+
+    try {
+      console.log(filterText)
+      const response = await axios.get(`${API_URL}api/post/filtered-posts?city=Pune`);
+      console.log(`${API_URL}/api/post${filterText}`)
+      console.log(response);
+      console.log(response.body.content);
+      setPosts(response.body.content);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      setLoading(false);
+    }
+    
+
   };
 
 
@@ -70,7 +90,8 @@ const HomeScreen = ({ navigation }) => {
   const handleFilterApply = () => {
     // Apply filters based on selectedFilters object
     // Fetch posts with applied filters
-    fetchPosts();
+    // fetchPosts();
+
     setFilterVisible(false); // Hide the filter options container after applying filters
   };
 
@@ -185,6 +206,13 @@ const HomeScreen = ({ navigation }) => {
 
       {/* Footer */}
       <View style={styles.footer}>
+      <TouchableOpacity
+          style={styles.mapButton}
+          onPress={() => navigation.navigate('MapLeaflet')} // Replace 'MapLeaflet' with the correct screen name
+        >
+        <Ionicons name="map-outline" size={32} color="#3498db" />
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => navigation.navigate('Createpost')}
@@ -302,6 +330,14 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 5,
   },
+  mapButton: {
+    backgroundColor: 'white', // Background color for the button
+    borderRadius: 50, // Make it circular
+    padding: 10, // Padding inside the button
+    elevation: 5, // Add elevation (shadow) for Android
+    marginLeft: 10, // Add margin to separate it from the 'Add' button
+  },
+  
 });
 
 

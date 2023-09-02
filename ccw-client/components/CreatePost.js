@@ -6,6 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import { API_URL } from '../consts/consts';
+import { Ionicons } from '@expo/vector-icons'; 
+import FilePickerManager from 'react-native-file-picker';
 
 import PickLocationOnMap from './PickLocationOnMap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,10 +19,11 @@ const CreatePost = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [location, setLocation] = useState(null);
   const [isPickingLocation, setIsPickingLocation] = useState(false);
+  const [isPickingLocationHideComponent,setIsPickngLocationHideComponent] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setCameraPermission(status === 'granted');
       getLocationAsync();
     })();
@@ -100,6 +103,24 @@ const CreatePost = ({ navigation }) => {
     }
   };
 
+  const handleImageRemove =async () => {
+    setSelectedImage(null);
+  };
+  
+  const handleDocumentUpload = () => {
+    FilePickerManager.showFilePicker(null, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled document picker');
+      } else if (response.error) {
+        console.error('Error selecting document:', response.error);
+      } else {
+        console.log('Selected document:', response);
+        setSelectedDocument(response);
+      }
+    });
+  };
+
+
   const takePicture = async () => {
     if (camera) {
       const photo = await camera.takePictureAsync();
@@ -117,8 +138,9 @@ const CreatePost = ({ navigation }) => {
   
 
   return (
-    <ScrollView style={styles.container}>
     <View style={styles.container}>
+    <ScrollView style={styles.container}>
+    
       <Text style={styles.title}>Create Post</Text>
       <Controller
         control={control}
@@ -177,55 +199,74 @@ const CreatePost = ({ navigation }) => {
             {isPickingLocation ? 'Manual' : 'Automatic'}
           </Text>
         </TouchableOpacity>
-      </View>
-
-          <View>
-
-      {/* Location selection */}
-      {isPickingLocation && (
-        <PickLocationOnMap onSelectLocation={handleLocationSelection} />
-      )}
-
-      
-      {/* {!isPickingLocation && (
-        <TouchableOpacity style={styles.uploadButton} onPress={getLocationAsync}>
-          <Text style={styles.buttonText}>Get Location</Text>
-        </TouchableOpacity>
-
-      )} */}
-      </View>
-      {/* Image Upload */}
-      <TouchableOpacity style={styles.uploadButton} onPress={openImagePicker}>
-        <Text style={styles.buttonText}>Upload Image</Text>
+        {/* Image Upload */}
+      <TouchableOpacity style={styles.iconButton} onPress={openImagePicker}>
+        <Ionicons name="md-camera-outline" size={24} color="white" />
       </TouchableOpacity>
 
-      {/* Selected Image */}
-      {selectedImage && (
-        <Image source={{ uri: selectedImage.uri }} style={styles.image} />
-      )}
+       {/* Publish Button */}
+       <TouchableOpacity style={styles.publishButtonIcon} onPress={handleSubmit(onSubmit)}>
+        <Ionicons name="md-paper-plane-outline" size={24} color="white" />
+      </TouchableOpacity>
+      </View>
 
       {/* Current Location */}
       <View style={styles.locationContainer}>
-        <Text style={styles.locationText}>Image Location:</Text>
+        <Text style={styles.locationText}>Current Location:</Text>
         {location && (
           <Text style={styles.locationCoords}>
-            Latitude: {location.coords.latitude.toFixed(6)}
-          </Text>
-        )}
-        {location && (
-          <Text style={styles.locationCoords}>
-            Longitude: {
+            Latitude: {location.coords.latitude.toFixed(6)}  Longitude: {
             location.coords.longitude.toFixed(6)}
           </Text>
         )}
+        {location && (
+          <Text style={styles.locationCoords}>
+           
+          </Text>
+        )}
       </View>
+      
 
-      {/* Publish Button */}
-      <TouchableOpacity style={styles.publishButton} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Publish</Text>
-      </TouchableOpacity>
-    </View>
+      {/* Selected Image */}
+      {selectedImage && (
+        <TouchableOpacity style={styles.imageContainer}>
+          <Image source={{ uri: selectedImage.uri }} style={styles.image} />
+          <TouchableOpacity style={styles.removeImageButton} onPress={handleImageRemove}>
+            <Ionicons name="md-close" size={24} color="white" />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      )}
+
     </ScrollView>
+
+      {/* {!isPickingLocation && (
+          <TouchableOpacity style={styles.uploadButton} onPress={getLocationAsync}>
+            <Text style={styles.buttonText}>Get Location</Text>
+          </TouchableOpacity>
+
+      )} */}
+        
+
+   
+      {/* Location selection */}
+      {isPickingLocation && isPickingLocationHideComponent && (
+        <PickLocationOnMap 
+        
+        onSelectLocation={handleLocationSelection} 
+        setIsPickingLocation={setIsPickingLocation}
+        />
+      )}
+      
+      
+      
+      
+    
+
+
+     
+    
+  </View>
+    
   );
 };
 
@@ -234,6 +275,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  publishButtonIcon: {
+    // position: 'absolute',
+    alignSelf: 'flex-end', 
+    
+    backgroundColor: '#3498db',
+    borderRadius: 5,
+    padding: 10,
+    marginLeft: 20
+  },
+  iconButton: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#3498db',
+    borderRadius: 5,
+    padding: 10,
+    
+    marginLeft :30
+    // marginBottom: 10,
+  },
+  imageContainer: {
+    position: 'relative',
+    // marginBottom: 10,
+  },
+  removeImageButton: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 12,
+    padding: 4,
   },
   title: {
     fontSize: 24,

@@ -20,6 +20,8 @@ model User {
   profile UserProfile? 
 
   posts Post[]
+  comments  Comment[]
+  upvotes   Upvote[]
   feedbacks UserFeedBack[]
 
   @@map("users")
@@ -55,12 +57,38 @@ model Post {
   published Boolean? @default(false) @map("published")
   timestamp DateTime @default(now()) @map("timestamp") @db.Timestamptz() 
   authorId  Int  @map("author_id")
+  comments  Comment[]
+  upvotes   Upvote[]
 
   author    User?    @relation(fields: [authorId], references: [id],onDelete: Cascade)
 
   @@map("posts")
 }
 
+model Upvote {
+  id        Int      @default(autoincrement()) @id @map("id")
+  postId    Int      @map("post_id")
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("upvotes")
+}
+
+model Comment {
+  id        Int      @default(autoincrement()) @id @map("id")
+  postId    Int      @map("post_id")
+  userId    Int      @map("user_id")
+  content   String   @map("content")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
 
 model UserFeedBack{
    id        Int      @default(autoincrement()) @id @map("id")

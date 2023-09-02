@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet,TouchableHighlight } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { API_URL } from '../consts/consts';
 
-
 const Login = ({ navigation }) => {
-  
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
@@ -18,13 +16,11 @@ const Login = ({ navigation }) => {
       });
 
       if (response.status === 201) {
-        // Save password to AsyncStorage on successful Login
         await AsyncStorage.removeItem('user_id');
         await AsyncStorage.removeItem('user_email');
-        console.log('user_id',response.data.id);
-        await AsyncStorage.setItem('user_id',response.data.id );
-        await AsyncStorage.setItem('user_email',response.data.email)
-        
+        await AsyncStorage.setItem('user_id', response.data.id);
+        await AsyncStorage.setItem('user_email', response.data.email);
+
         navigation.navigate('Home');
       }
     } catch (error) {
@@ -66,23 +62,24 @@ const Login = ({ navigation }) => {
           />
         )}
       />
-      
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+      <View style={styles.linksContainer}>
       <TouchableHighlight
-          underlayColor="transparent"
-          onPress={() => navigation.navigate('ForgotPassword')}
-        >
-          <Text style={styles.linkText}>Forgot Password?</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor="transparent"
-          onPress={() => navigation.navigate('Signup')}
-        >
-          <Text style={styles.linkText}>Sign Up</Text>
-        </TouchableHighlight>
-      
+        underlayColor="transparent"
+        onPress={() => navigation.navigate('ForgotPassword')}
+      >
+        <Text style={styles.linkText}>Forgot Password?</Text>
+      </TouchableHighlight>
+
+      <TouchableHighlight
+        underlayColor="transparent"
+        onPress={() => navigation.navigate('Signup')}
+      >
+        <Text style={styles.linkText}>Sign Up</Text>
+      </TouchableHighlight>
+      </View>
+
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
-      
     </View>
   );
 };
@@ -108,6 +105,16 @@ const styles = StyleSheet.create({
   },
   error: {
     color: 'red',
+    marginBottom: 10,
+  },
+  linkText: {
+    color: '#3498db',
+    marginBottom: 10,
+  },
+  linksContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
     marginBottom: 10,
   },
 });

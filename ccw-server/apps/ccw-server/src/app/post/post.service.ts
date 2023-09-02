@@ -38,20 +38,26 @@ export class PostService {
     async getFilteredPosts(
       pageSize: number,
       pageOffset: number,
-      name: string,
-      type: string,
+      city: string,
+      title: string,
+      content: string,
       sortBy: string,
       sortOrder: 'asc' | 'desc'
     ): Promise<FilterPostsResponseDto> {
       const whereArray = [];
       let whereQuery = {};
   
-      if (name !== undefined) {
-        whereArray.push({ name: { contains: name } });
+      //TODO: just uncomment and you will get for and query in findmany
+      if (city !== undefined) {
+        whereArray.push({ city:  city  });
       }
   
-      if (type !== undefined) {
-        whereArray.push({ type: { contains: type } });
+      if (title !== undefined) {
+        whereArray.push({ title: { contains: title } });
+      }
+
+      if (content !== undefined) {
+        whereArray.push({ content: { contains: content } });
       }
   
       if (whereArray.length > 0) {
@@ -61,6 +67,7 @@ export class PostService {
           whereQuery = whereArray[0];
         }
       }
+      console.log(whereQuery);
   
       const sort = (sortBy ? sortBy : 'id').toString();
       const order = sortOrder ? sortOrder : 'asc';

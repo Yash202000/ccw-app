@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseFilePipeBuilder, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseFilePipeBuilder, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
 import 'multer';
 
-import { PostCreateDto, PostResponseDto } from './dto/post.dto';
+import { FilterPostsResponseDto, PostCreateDto, PostResponseDto } from './dto/post.dto';
 
 import { PostService } from './post.service';
 
@@ -13,12 +13,12 @@ import { PostService } from './post.service';
 export default class PostController {
     constructor(private postService: PostService){}    
     
-    @ApiOperation({ summary: 'Get post by id' })
-    @ApiResponse({ status: 200, description: 'Success', type: PostResponseDto })
-    @Get(':id')
-    getPostById(@Param('id') id: string): Promise<PostResponseDto> {
-        return this.postService.post(+id);
-    }
+    // @ApiOperation({ summary: 'Get post by id' })
+    // @ApiResponse({ status: 200, description: 'Success', type: PostResponseDto })
+    // @Get(':id')
+    // getPostById(@Param('id') id: string): Promise<PostResponseDto> {
+    //     return this.postService.post(+id);
+    // }
 
     @ApiOperation({ summary: 'Get all posts' })
     @ApiResponse({ status: 200, description: 'Success', type: PostResponseDto })
@@ -34,25 +34,49 @@ export default class PostController {
         return this.postService.posts({});
     }
 
+    // @ApiOperation({ summary: 'filter post by string' })
+    // @ApiResponse({ status: 200, description: 'Success', type: [PostResponseDto] })
+    // @Get('filtered-posts/:searchString')
+    // async getFilteredPosts(
+    //     @Param('searchString') searchString: string,
+    // ): Promise<PostResponseDto[]> {
+    //     return this.postService.posts({
+    //     where: {
+    //         OR: [
+    //         {
+    //             title: { contains: searchString },
+    //         },
+    //         {
+    //             content: { contains: searchString },
+    //         },
+    //         ],
+    //     },
+    //     });
+    // }
+
     @ApiOperation({ summary: 'filter post by string' })
     @ApiResponse({ status: 200, description: 'Success', type: [PostResponseDto] })
-    @Get('filtered-posts/:searchString')
+    @Get('filtered-posts')
     async getFilteredPosts(
-        @Param('searchString') searchString: string,
-    ): Promise<PostResponseDto[]> {
-        return this.postService.posts({
-        where: {
-            OR: [
-            {
-                title: { contains: searchString },
-            },
-            {
-                content: { contains: searchString },
-            },
-            ],
-        },
-        });
-    }
+        @Query('pageSize') pageSize?: number,
+        @Query('pageOffset') pageOffset?: number,
+        @Query('city') city?: string,
+        @Query('title') title?: string,
+        @Query('content') content?: string,
+        @Query('sortBy') sortBy?: string,
+        @Query('sortOrder') sortOrder?: 'asc' | 'desc'
+      ): Promise<FilterPostsResponseDto> {
+        return  this.postService.getFilteredPosts(
+          +pageSize,
+          +pageOffset,
+          city,
+          title,
+          content,
+          sortBy,
+          sortOrder
+        );
+       
+      }
 
 
 

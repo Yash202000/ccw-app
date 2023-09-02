@@ -34,6 +34,7 @@ import About from './components/About';
 import HelpAndSupport from './components/HelpandSupport';
 import RateUs from './components/RateUs';
 import ViewProfile from './components/Profile';
+import MapLeaflet from './components/MapLeaflet';
 
 const Stack = createStackNavigator();
 
@@ -82,6 +83,9 @@ const App = () => {
               ),
             })}
         />
+        <Stack.Screen name="MapLeaflet" component={MapLeaflet} />
+
+
 
 
       </Stack.Navigator>
