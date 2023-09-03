@@ -53,6 +53,14 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto): Promise<UserResponseDto> {
 
+    const existingUser = await this.prismaService.user.findFirst({
+      where:{
+        email: createUserDto.email
+      }
+    })
+    if(existingUser) throw new HttpException("user already exist please signin",HttpStatus.BAD_REQUEST)
+
+
     const userPassword = await this.authService.hashPassword(createUserDto.password);
     
     
