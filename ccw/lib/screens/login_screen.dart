@@ -80,14 +80,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             try {
                               final response = await http.post(
-                                    Uri.parse('http://192.168.5.55:3000/api/user/signin'),
+                                    Uri.parse('http://192.168.0.106:3000/api/user/signin'),
                                     body: {
                                       'email': _email,
                                       'password': _password,
                                     },
                                   );
 
-                              if (response.statusCode == 200) {
+                              if (response.statusCode == 201) {
                                 setState(() {
                                   _saving = false;
                                   Navigator.popAndPushNamed(

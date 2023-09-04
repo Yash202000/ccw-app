@@ -104,15 +104,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                               if (_confirmPass == _password) {
                                 try {
-                                  print('inside the signup button.');
-                                  print(_password.runtimeType);
-                                  print( Uri.parse('http://192.168.5.55:3000/api/user/signup'));
-                                  print({
-                                      'email': _email,
-                                      'password': _password,
-                                    });
                                   final response = await http.post(
-                                    Uri.parse('http://192.168.5.55:3000/api/user/signup'),
+                                    Uri.parse('http://192.168.0.106:3000/api/user/signup'),
                                     body: {
                                       'email': _email,
                                       'password': _password,
