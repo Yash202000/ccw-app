@@ -6,6 +6,8 @@ import 'package:ccw/screens/login_screen.dart';
 import 'package:ccw/constants.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:http/http.dart' as http;
+import 'package:ccw/consts/env.dart' show backendUrl;
+import 'dart:developer';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -104,8 +106,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                               if (_confirmPass == _password) {
                                 try {
+                                  log('$backendUrl/api/user/signup');
                                   final response = await http.post(
-                                    Uri.parse('http://192.168.0.106:3000/api/user/signup'),
+                                    Uri.parse('$backendUrl/api/user/signup'),
                                     body: {
                                       'email': _email,
                                       'password': _password,

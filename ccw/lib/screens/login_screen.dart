@@ -5,11 +5,13 @@ import 'package:ccw/screens/welcome.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:ccw/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:ccw/consts/env.dart' show backendUrl;
 // import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   static String id = 'login_screen';
+  
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -80,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             try {
                               final response = await http.post(
-                                    Uri.parse('http://192.168.0.106:3000/api/user/signin'),
+                                    Uri.parse('$backendUrl/api/user/signin'),
                                     body: {
                                       'email': _email,
                                       'password': _password,
