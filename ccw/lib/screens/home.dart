@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ccw/screens/custom/fab_bottom_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ccw/screens/create_post.dart';
+
 
 
 class HomePage extends StatefulWidget {
@@ -132,6 +134,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           onTap: () {
                             Navigator.pop(context);
                             debugPrint(bottomMenuItems[index].title);
+                            debugPrint('$index');
+                            switch (index) {
+                              case 0:
+                                 Navigator.pushNamed(context, CreatePostWidget.id);
+                              case 1:
+                                debugPrint(bottomMenuItems[index].title);
+                              case 2:
+                               debugPrint(bottomMenuItems[index].title);
+                              case 3:
+                               debugPrint(bottomMenuItems[index].title);
+                              default:
+                                debugPrint(bottomMenuItems[index].title);
+                            }
+                            
                           },
                         );
                       }),

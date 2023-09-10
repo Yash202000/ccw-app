@@ -4,6 +4,9 @@ import 'package:ccw/screens/login_screen.dart';
 import 'package:ccw/screens/signup_screen.dart';
 import 'package:ccw/screens/welcome.dart';
 import 'package:ccw/screens/home.dart';
+import 'package:ccw/screens/create_post.dart';
+
+
 // import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -36,6 +39,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         WelcomeScreen.id: (context) => HomePage(),
+        CreatePostWidget.id: (context) => CreatePostWidget(),
       },
     );
   }

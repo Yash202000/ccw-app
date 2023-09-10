@@ -139,8 +139,23 @@ class FeedBloc {
   StreamSink<Feed> get feedLikeDecrement => _feedLikeDecrementController.sink;
 
   // Constructor
+
+  get_posts(){
+    //  final response = await http.post(
+    //       Uri.parse('$backendUrl/api/user/signin'),
+    //       body: {
+    //         'email': _email,
+    //         'password': _password,
+    //       },
+    //     );
+
+    print('this is inside the get_posts function!');
+  }
+
+
   FeedBloc()
   {
+    get_posts();
     _feedListStreamController.add(feedList);
     _feedLikeIncrementController.stream.listen(_incrementLike);
     _feedLikeDecrementController.stream.listen(_decrementLike);
