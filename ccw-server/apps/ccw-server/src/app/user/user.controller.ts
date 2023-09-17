@@ -18,12 +18,22 @@ import {
   } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto, LoginUserResponse, UserResponseDto } from './dto/user.dto';
+import { CreateMemberDto } from './dto/create-member.dto';
 
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}
+    
+    @ApiOperation({ summary: 'Get all the users in keycloak' })
+    @ApiResponse({ status: 200, description: 'Success', type: [UserResponseDto] })    
+    @Get('keycloakusers')
+    async Keycloak_getUsers(){
+        return this.userService.Keycloak_getUsers();
+    }
+
+
 
     @ApiOperation({ summary: 'Get all the users' })
     @ApiResponse({ status: 200, description: 'Success', type: [UserResponseDto] })    
@@ -40,6 +50,8 @@ export class UserController {
     async getUserById(@Param('id') id:number): Promise<UserResponseDto>{
         return this.userService.user(+id);
     }
+
+    
 
 
 
@@ -58,6 +70,40 @@ export class UserController {
         return this.userService.createUser(userData);
     }
 
+
+    @ApiOperation({ summary: 'Create user with keycloak' })
+    @ApiBody({ type: CreateMemberDto })
+    @ApiResponse({
+        status: 201,
+        description: 'Success',
+        type: UserResponseDto,
+    })
+    @HttpCode(HttpStatus.CREATED)
+    @Post('signup-keycloak')
+    async signupUser_Keycloak(
+        @Body() member: CreateMemberDto,
+    )
+    // : Promise<UserResponseDto>
+     {
+        return this.userService.signupUser_Keycloak(member);
+    }
+
+    @ApiOperation({ summary: 'Signin user with keycloak' })
+    @ApiBody({ type: CreateUserDto })
+    @ApiResponse({
+        status: 201,
+        description: 'Success',
+        type: UserResponseDto,
+    })
+    @HttpCode(HttpStatus.CREATED)
+    @Post('signin-keycloak')
+    async signinUser_Keycloak(
+        @Body() member: CreateUserDto,
+    )
+    // : Promise<UserResponseDto>
+     {
+        return this.userService.signinUser_Keycloak(member);
+    }
 
 
     @ApiOperation({ summary: 'Login user' })
