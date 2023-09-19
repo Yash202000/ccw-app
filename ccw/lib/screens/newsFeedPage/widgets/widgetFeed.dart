@@ -104,8 +104,8 @@ Widget feedNewsCardItem(BuildContext context, Feed feed) {
             userAvatarSection(context, feed),
             space15(),
             Visibility(
-                visible: feed.name.isEmpty == true ? false : true,
-                child: Text(feed.name,
+                visible: feed.title.isEmpty == true ? false : true,
+                child: Text(feed.title,
                     softWrap: true,
                     maxLines: 2,
                     style:
@@ -123,7 +123,7 @@ Widget feedNewsCardItem(BuildContext context, Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  '${feed.members} Members have this questions',
+                  '${feed.members} Members supported the post',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -157,8 +157,8 @@ Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
             userAvatarSection(context, feed),
             space15(),
             Visibility(
-                visible: feed.name.isEmpty == true ? false : true,
-                child: Text(feed.name,
+                visible: feed.title.isEmpty == true ? false : true,
+                child: Text(feed.title,
                     softWrap: true,
                     maxLines: 2,
                     style:
@@ -174,7 +174,7 @@ Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  '${feed.members} Members have this questions',
+                  '${feed.members} Members supported the post',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -190,6 +190,8 @@ Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
     ),
   );
 }
+
+//important card code to render
 
 Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
   return Container(
@@ -208,7 +210,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
             space10(),
             userAvatarSection(context, feed),
             space15(),
-            Text(feed.name,
+            Text(feed.title,
                 softWrap: true,
                 maxLines: 2,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -218,7 +220,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
             space15(),
             // show Image Preview
 
-            Image.asset('assets/img/running_girl.jpeg', fit: BoxFit.cover, height: 180, width: double.infinity),
+            Image.asset('assets/images/running_girl.jpeg', fit: BoxFit.cover, height: 180, width: double.infinity),
 
             space15(),
             // shows location
@@ -229,7 +231,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  '${feed.members} Members have this questions',
+                  '${feed.members} Members supported the post',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -313,8 +315,8 @@ Widget pollingCard(BuildContext context,Feed feed) {
             userAvatarSection(context, feed),
             space15(),
             Visibility(
-                visible: feed.name.isEmpty == true ? false : true,
-                child: Text(feed.name,
+                visible: feed.title.isEmpty == true ? false : true,
+                child: Text(feed.title,
                     softWrap: true,
                     maxLines: 2,
                     style:

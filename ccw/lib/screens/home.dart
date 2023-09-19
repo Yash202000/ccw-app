@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             debugPrint('$index');
                             switch (index) {
                               case 0:
-                                 Navigator.pushNamed(context, CreatePostWidget.id);
+                                 Navigator.pushNamed(context, CreatePost.id);
                               case 1:
                                 debugPrint(bottomMenuItems[index].title);
                               case 2:

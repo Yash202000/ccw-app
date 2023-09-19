@@ -6,6 +6,8 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:ccw/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:ccw/consts/env.dart' show backendUrl;
+import 'package:shared_preferences/shared_preferences.dart';
+
 // import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -81,15 +83,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               _saving = true;
                             });
                             try {
-                              final response = await http.post(
-                                    Uri.parse('$backendUrl/api/user/signin'),
-                                    body: {
-                                      'email': _email,
-                                      'password': _password,
-                                    },
-                                  );
+                                final response = await http.post(
+                                      Uri.parse('$backendUrl/api/user/signin'),
+                                      body: {
+                                        'email': _email,
+                                        'password': _password,
+                                      },
+                                    );
 
                               if (response.statusCode == 201) {
+                                print(response.body);
+                                 final prefs = await SharedPreferences.getInstance();
+                                prefs.setString('userinfo', response.body);
                                 setState(() {
                                   _saving = false;
                                   Navigator.popAndPushNamed(

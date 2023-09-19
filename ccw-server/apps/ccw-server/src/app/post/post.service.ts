@@ -100,12 +100,13 @@ export class PostService {
     }
   
   
-    createPost(data: PostCreateDto,file): Promise<PostResponseDto> {
+    createPost(data: PostCreateDto): Promise<PostResponseDto> {
+
+    // createPost(data: PostCreateDto,file): Promise<PostResponseDto> {
       
       //TODO : handle file upload to blob storage and get the imageurl for the post.
-      console.log(file);
       // const imageurl = data.file.filename;
-      const imageurl = file.originalname
+      const imageurl = 'test 1 file'
       // console.log(imageurl);
 
       return this.prismaService.post.create({

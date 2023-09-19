@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         WelcomeScreen.id: (context) => HomePage(),
-        CreatePostWidget.id: (context) => CreatePost(),//CreatePostWidget()
+        CreatePost.id: (context) => CreatePost(),
       },
     );
   }

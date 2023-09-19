@@ -19,7 +19,7 @@ Widget feedCard(BuildContext context, Feed listFeed) {
               space10(),
               userAvatarSection(context, listFeed),
               space15(),
-              Text(listFeed.name,
+              Text(listFeed.title,
                   softWrap: true,
                   maxLines: 2,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -33,7 +33,7 @@ Widget feedCard(BuildContext context, Feed listFeed) {
                   Icon(FontAwesomeIcons.addressBook),
                   SizedBox(width: 10),
                   Text(
-                    '${listFeed.members} Members have this questions',
+                    '${listFeed.members} Members supported the post',
                     style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                   ),
                 ],
@@ -137,19 +137,16 @@ Widget userAvatarSection(BuildContext context, Feed listFeed) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(listFeed.title,
+                        Text(listFeed.username,
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         SizedBox(
                           width: 10,
                         ),
-                        Text(listFeed.subcategory,
-                            softWrap: true,
-                            style: TextStyle(fontSize: 14, color: Colors.grey))
                       ],
                     ),
                     SizedBox(height: 4),
-                    Text('DIAGNOSED RECENTALLY',
+                    Text('User Description',
                         style: TextStyle(fontSize: 12, color: Colors.teal)),
                   ],
                 )
@@ -186,7 +183,7 @@ Widget renderCategoryTime(Feed listFeed) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
-      Text(listFeed.category,
+      Text('',
           style: TextStyle(fontSize: 14, color: Colors.grey[700])),
       Text(listFeed.time,
           style: TextStyle(fontSize: 14, color: Colors.grey[700])),
