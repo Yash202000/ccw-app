@@ -19,7 +19,7 @@ class _NewsFeedState extends State<NewsFeed> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: actionBarRow(),
+        title: actionBarRow(context),
         centerTitle: false,
         elevation: 0,
         automaticallyImplyLeading: false,

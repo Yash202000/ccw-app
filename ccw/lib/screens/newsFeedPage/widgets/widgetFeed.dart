@@ -3,9 +3,10 @@ import 'package:ccw/screens/newsFeedPage/widgets/feedCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ccw/screens/profile/edit_profile.dart';
 
 
-Widget actionBarRow() {return Row(
+Widget actionBarRow(BuildContext context) {return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
@@ -33,10 +34,21 @@ Widget actionBarRow() {return Row(
           )
         ],
       ),
-      CircleAvatar(
+      
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditProfileWidget()),
+          );
+        },
+        child: CircleAvatar(
           child: ClipOval(child: Image.network('https://www.w3schools.com/w3images/avatar3.png')),
           radius: 20,
-          backgroundColor: Colors.grey)
+          backgroundColor: Colors.grey,
+        ),
+      )
+
     ],
   );}
 

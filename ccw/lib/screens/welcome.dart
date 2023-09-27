@@ -26,13 +26,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>  with TickerProviderState
     int _selectedDrawerIndex = 0;
      List<MenuModel> bottomMenuItems =  <MenuModel>[];
 
-
-    
-
-
-    
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: WillPopScope(

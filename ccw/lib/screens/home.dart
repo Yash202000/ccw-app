@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:ccw/screens/custom/fab_bottom_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ccw/screens/create_post.dart';
+import 'package:ccw/screens/profile/edit_profile.dart';
+
 
 
 

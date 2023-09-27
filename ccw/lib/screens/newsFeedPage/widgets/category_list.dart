@@ -14,12 +14,7 @@ class _CategoryListState extends State<CategoryList> {
 
   List<String> listCategory = [
     'All posts',
-    'News',
-    'Doctor',
-    'Lifestyle',
-    'Symptom',
-    'Entertainment',
-    'Love'
+    'Featured',
   ];
 
   @override
