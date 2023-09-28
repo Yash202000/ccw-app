@@ -3,13 +3,42 @@ import 'package:ccw/screens/newsFeedPage/widgets/feedBloc.dart';
 import 'package:ccw/screens/postpage/postdetail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+
+String formatTimestamp(String timestamp) {
+  final DateTime dateTime = DateTime.parse(timestamp);
+  final Duration difference = DateTime.now().difference(dateTime);
+  final int minutes = difference.inMinutes;
+
+  if (minutes < 1) {
+    return 'just now';
+  } else if (minutes == 1) {
+    return '1 min ago';
+  } else if (minutes < 60) {
+    return '$minutes mins ago';
+  } else {
+    final int hours = minutes ~/ 60;
+    if (hours == 1) {
+      return '1 hour ago';
+    } else if (hours < 24) {
+      return '$hours hours ago';
+    } else {
+      final int days = hours ~/ 24;
+      if (days == 1) {
+        return '1 day ago';
+      } else {
+        return '$days days ago';
+      }
+    }
+  }
+}
 
 
-Widget feedCard(BuildContext context, Feed listFeed) {
+Widget feedCard(BuildContext context, GptFeed listFeed) {
   return Card(
     child: GestureDetector(
       onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => PostPageDetails())),
+          context, MaterialPageRoute(builder: (context) => PostPageDetails(feed: listFeed))),
       child: Container(
           padding: EdgeInsets.all(8),
           child: Column(
@@ -24,7 +53,7 @@ Widget feedCard(BuildContext context, Feed listFeed) {
                   maxLines: 2,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               space15(),
-              Text(listFeed.description, style: TextStyle(fontSize: 14, color: Colors.grey)),
+              Text(listFeed.content, style: TextStyle(fontSize: 14, color: Colors.grey)),
               space15(),
               setLocation(listFeed),
               Divider(thickness: 1),
@@ -33,14 +62,14 @@ Widget feedCard(BuildContext context, Feed listFeed) {
                   Icon(FontAwesomeIcons.addressBook),
                   SizedBox(width: 10),
                   Text(
-                    '${listFeed.members} Members supported the post',
+                    '${listFeed.count.upvotes} Members supported the post',
                     style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                   ),
                 ],
               ),
               Divider(thickness: 1),
               SizedBox(height: 10),
-              likeCommentShare(listFeed),
+              likeCommentShare(context,listFeed),
               space15(),
             ],
           )),
@@ -53,7 +82,7 @@ Widget feedCard(BuildContext context, Feed listFeed) {
 
 
 
-Widget likeCommentShare(Feed listFeed) {
+Widget likeCommentShare(BuildContext context,GptFeed listFeed) {
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,7 +100,7 @@ Widget likeCommentShare(Feed listFeed) {
                 size: 18,
               ),
               SizedBox(width: 5),
-              Text('${listFeed.likes}')
+              Text('${listFeed.count.upvotes}')
             ],
           )),
       Row(
@@ -79,12 +108,17 @@ Widget likeCommentShare(Feed listFeed) {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-                onTap: () => debugPrint('Comment Tapped'),
+                onTap: () => 
+                  
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PostPageDetails(feed: listFeed)))
+                  
+                  ,
                 child: Row(
                   children: <Widget>[
                     Icon(FontAwesomeIcons.comment, size: 18),
                     SizedBox(width: 5),
-                    Text(listFeed.comments)
+                    Text('${listFeed.count.comments}')
                   ],
                 ))
           ]),
@@ -104,20 +138,20 @@ Widget likeCommentShare(Feed listFeed) {
 
 
 
-Widget setLocation(Feed listFeed) {
+Widget setLocation(GptFeed listFeed) {
   return Row(
     children: <Widget>[
       Icon(Icons.location_on, color: Colors.teal),
       SizedBox(width: 15),
       Text(
-        listFeed.location,
+        listFeed.city,
         style: TextStyle(fontSize: 12, color: Colors.teal),
       ),
     ],
   );
 }
 
-Widget userAvatarSection(BuildContext context, Feed listFeed) {
+Widget userAvatarSection(BuildContext context, GptFeed listFeed) {
   return Row(
     children: <Widget>[
       Expanded(
@@ -128,7 +162,7 @@ Widget userAvatarSection(BuildContext context, Feed listFeed) {
               children: <Widget>[
                 CircleAvatar(
                     backgroundColor: Colors.grey,
-                    child: ClipOval(child: Image.network(listFeed.avatarImg)),
+                    child: ClipOval(child: Image.network(listFeed.author.profile.avatar)),
                     radius: 20),
                 SizedBox(width: 10),
                 Column(
@@ -137,7 +171,7 @@ Widget userAvatarSection(BuildContext context, Feed listFeed) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(listFeed.username,
+                        Text(listFeed.author.profile.firstName+' '+listFeed.author.profile.lastName,
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         SizedBox(
@@ -179,13 +213,18 @@ Widget space15() {
   return SizedBox(height: 10);
 }
 
-Widget renderCategoryTime(Feed listFeed) {
+Widget renderCategoryTime(GptFeed listFeed) {
+  
+  final formattedTime = formatTimestamp(listFeed.timestamp);
+  print(formattedTime);
+  
+  
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
       Text('',
           style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-      Text(listFeed.time,
+      Text(formattedTime,
           style: TextStyle(fontSize: 14, color: Colors.grey[700])),
     ],
   );

@@ -45,7 +45,7 @@ Widget othersComment(BuildContext context, Feed feed) {
                   space15(),
                   Divider(thickness: 1),
                   SizedBox(height: 10),
-                  menuReply(feed),
+                  // menuReply(feed),
                   space15(),
                 ],
               ),
@@ -95,7 +95,7 @@ Widget othersCommentWithImageSlider(BuildContext context, Feed feed) {
                   imageCarouselSlider(),
                   Divider(thickness: 1),
                   SizedBox(height: 10),
-                  menuReply(feed),
+                  // menuReply(feed),
                   space15(),
                 ],
               ),
@@ -142,7 +142,7 @@ Widget imageCarouselSlider() {
   );
 }
 
-Widget menuReply(Feed listFeed) {
+Widget menuReply(GptFeed listFeed) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -151,7 +151,7 @@ Widget menuReply(Feed listFeed) {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
-              onTap: () => debugPrint('${listFeed.likes} tapped'),
+              onTap: () => debugPrint('${listFeed.count.upvotes} tapped'),
               child: Row(
                 children: <Widget>[
                   Icon(
@@ -161,7 +161,7 @@ Widget menuReply(Feed listFeed) {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    '${listFeed.likes}',
+                    '${listFeed.count.upvotes}',
                     style: TextStyle(
                         color: Colors.teal,
                         fontSize: 12,
@@ -180,7 +180,7 @@ Widget menuReply(Feed listFeed) {
                         Icon(FontAwesomeIcons.arrowDown, size: 16),
                         SizedBox(width: 5),
                         Text(
-                          listFeed.comments,
+                          '${listFeed.count.comments}',
                           style: TextStyle(
                               fontSize: 12, fontWeight: FontWeight.bold),
                         )
@@ -278,7 +278,7 @@ Widget commentReply(BuildContext context, Feed feed) {
 
                   Divider(thickness: 1),
                   SizedBox(height: 10),
-                  menuCommentReply(feed),
+                  // menuCommentReply(feed),
                   space15(),
                 ],
               ),
@@ -299,13 +299,13 @@ Widget commentReply(BuildContext context, Feed feed) {
   );
 }
 
-Widget menuCommentReply(Feed listFeed) {
+Widget menuCommentReply(GptFeed listFeed) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
       GestureDetector(
-          onTap: () => debugPrint('${listFeed.likes} tapped'),
+          onTap: () => debugPrint('${listFeed.count.upvotes} tapped'),
           child: Row(
             children: <Widget>[
               Icon(
@@ -315,7 +315,7 @@ Widget menuCommentReply(Feed listFeed) {
               ),
               SizedBox(width: 5),
               Text(
-                '${listFeed.likes}',
+                '${listFeed.count.upvotes}',
                 style: TextStyle(
                     color: Colors.teal,
                     fontSize: 12,
@@ -334,7 +334,7 @@ Widget menuCommentReply(Feed listFeed) {
                     Icon(FontAwesomeIcons.arrowDown, size: 16),
                     SizedBox(width: 5),
                     Text(
-                      listFeed.comments,
+                       '${listFeed.count.upvotes}',
                       style:
                           TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     )

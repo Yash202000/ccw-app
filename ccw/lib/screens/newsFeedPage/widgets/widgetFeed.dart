@@ -99,7 +99,7 @@ Widget topSpace() {
   return SizedBox(height: 10);
 }
 
-Widget feedNewsCardItem(BuildContext context, Feed feed) {
+Widget feedNewsCardItem(BuildContext context, GptFeed feed) {
   return Container(
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -124,8 +124,8 @@ Widget feedNewsCardItem(BuildContext context, Feed feed) {
                     TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
             space15(),
             Visibility(
-                visible: feed.description.isEmpty == true ? false : true,
-                child: Text(feed.description,
+                visible: feed.content.isEmpty == true ? false : true,
+                child: Text(feed.content,
                     style: TextStyle(fontSize: 14, color: Colors.grey))),
             space15(),
             setLocation(feed),
@@ -135,7 +135,7 @@ Widget feedNewsCardItem(BuildContext context, Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  '${feed.members} Members supported the post',
+                  '${feed.count.upvotes} Members supported the post',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -143,7 +143,7 @@ Widget feedNewsCardItem(BuildContext context, Feed feed) {
             ),
             Divider(thickness: 1),
             SizedBox(height: 10),
-            likeCommentShare(feed),
+            likeCommentShare(context,feed),
             space15(),
           ],
         ),
@@ -152,7 +152,7 @@ Widget feedNewsCardItem(BuildContext context, Feed feed) {
   );
 }
 
-Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
+Widget feedNewsCardItemQuestion(BuildContext context, GptFeed feed) {
   return Container(
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -186,7 +186,7 @@ Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  '${feed.members} Members supported the post',
+                  '${feed.count.upvotes} Members supported the post',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -194,7 +194,7 @@ Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
             ),
             Divider(thickness: 1),
             SizedBox(height: 10),
-            likeCommentShare(feed),
+            likeCommentShare(context,feed),
             space15(),
           ],
         ),
@@ -205,7 +205,7 @@ Widget feedNewsCardItemQuestion(BuildContext context, Feed feed) {
 
 //important card code to render
 
-Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
+Widget feedNewsCardWithImageItem(BuildContext context,GptFeed feed) {
   return Container(
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -227,7 +227,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
                 maxLines: 2,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             space15(),
-            Text(feed.description,
+            Text(feed.content,
                 style: TextStyle(fontSize: 14, color: Colors.blue)),
             space15(),
             // show Image Preview
@@ -243,7 +243,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  '${feed.members} Members supported the post',
+                  '${feed.count.upvotes} Members supported the post',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -251,7 +251,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,Feed feed) {
             ),
             Divider(thickness: 1),
             SizedBox(height: 10),
-            likeCommentShare(feed),
+            likeCommentShare(context,feed),
             space15(),
           ],
         ),
@@ -309,7 +309,7 @@ Widget questionPallet() {
   );
 }
 
-Widget pollingCard(BuildContext context,Feed feed) {
+Widget pollingCard(BuildContext context,GptFeed feed) {
   return Container(
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -343,7 +343,7 @@ Widget pollingCard(BuildContext context,Feed feed) {
                 Icon(FontAwesomeIcons.addressBook),
                 SizedBox(width: 10),
                 Text(
-                  'You and ${feed.members} Members Liked this poll',
+                  'You and ${feed.count.upvotes} Members Liked this poll',
                   style: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor),
                 ),
@@ -351,7 +351,7 @@ Widget pollingCard(BuildContext context,Feed feed) {
             ),
             Divider(thickness: 1),
             SizedBox(height: 10),
-            likeCommentShare(feed),
+            likeCommentShare(context,feed),
             space15(),
           ],
         ),

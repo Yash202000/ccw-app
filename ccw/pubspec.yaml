@@ -52,6 +52,7 @@ dependencies:
   flutter_map: ^3.1.0
   latlng: ^1.0.0
   latlong2: ^0.8.1
+  intl: ^0.17.0
 
   # flutter_country_picker: ^0.1.6
   # flutter_reaction_button: ^2.0.1+2

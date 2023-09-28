@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ccw/components/components.dart';
 import 'package:ccw/screens/welcome.dart';
+import 'package:ccw/consts/env.dart' show backendUrl;
 
 class Profile {
   String firstName;
@@ -52,7 +53,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 
   Future<void> fetchUserProfile() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/api/profile/1'));
+    final response = await http.get(Uri.parse('$backendUrl/api/profile/1'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(response.body);
       print(userData);
@@ -82,7 +83,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     print(testprofile);
 
     
-    final String apiUrl = 'http://localhost:3000/api/profile/edit';
+    final String apiUrl = '$backendUrl/api/profile/edit';
     
     try {
       final response = await http.post(

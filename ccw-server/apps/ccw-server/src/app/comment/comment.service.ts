@@ -40,6 +40,17 @@ export class CommentService {
     })
   }
 
+  allCommentsforPost(id: number){
+    return this.prismaService.post.findFirst({
+      where: {
+        id: id
+      },
+      include: {
+        comments: true
+      }
+    })
+  }
+
   update(id: number, updateCommentDto: UpdateCommentDto) {
     return this.prismaService.comment.update({
       where: {id: id},

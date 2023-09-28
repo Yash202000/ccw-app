@@ -40,6 +40,13 @@ export class CommentController {
     return this.commentService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get comment by Post id' })
+  @ApiResponse({ status: 200, description: 'Success', type: Comment })
+  @Get(':postid')
+  allCommentsforPost(@Param('postid') id: string) {
+    return this.commentService.allCommentsforPost(+id);
+  }
+
   @ApiOperation({ summary: 'Get comment by id' })
   @ApiResponse({ status: 200, description: 'Success', type: Comment })
   @Get(':id')

@@ -11,12 +11,114 @@
 import 'dart:async';
 
 
+
+
+class Author {
+  final Profile profile;
+
+  Author({required this.profile});
+
+  factory Author.fromJson(Map<String, dynamic> json) {
+    print('inside the author class from json ');
+    print(json);
+    return Author(
+      profile: Profile.fromJson(json['profile']),
+    );
+  }
+}
+
+class Profile {
+  final String firstName;
+  final String lastName;
+  final String avatar; // Use String? for nullable fields
+
+  Profile({
+    required this.firstName,
+    required this.lastName,
+    required this.avatar,
+  });
+
+  factory Profile.fromJson(Map<String, dynamic> json) {
+    if(json['avatar']==null){
+      json['avatar'] = 'https://www.w3schools.com/w3images/avatar1.png';
+    }
+    return Profile(
+      firstName: json['firstName'],
+      lastName: json['LastName'],
+      avatar: json['avatar'],
+    );
+  }
+}
+
+class Count {
+  final int upvotes;
+  final int comments;
+
+  Count({required this.upvotes, required this.comments});
+
+  factory Count.fromJson(Map<String, dynamic> json) {
+    return Count(
+      upvotes: json['upvotes'],
+      comments: json['comments'],
+    );
+  }
+}
+
+
+
+class GptFeed {
+  final int id;
+  final String title;
+  final String content;
+  final String imageUrl;
+  final String city;
+  final double latitude;
+  final double longitude;
+  final Author author;
+  final Count count;
+  final bool published;
+  final String timestamp;
+
+  GptFeed({
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.imageUrl,
+    required this.city,
+    required this.latitude,
+    required this.longitude,
+    required this.author,
+    required this.count,
+    required this.published,
+    required this.timestamp,
+  });
+  factory GptFeed.fromJson(Map<String, dynamic> json) {
+    return GptFeed(
+     id: json['id'],
+    title: json['title'],
+    content: json['content'],
+    imageUrl: json['imageUrl'],
+    city: json['city'],
+    latitude: json['latitude'],
+    longitude: json['longitude'],
+    
+    published: json['published'],
+    timestamp: json['timestamp'],
+    author: Author.fromJson(json['author']), // Parse Author
+    count: Count.fromJson(json['_count']),      // Parse Count
+    );
+  }
+}
+
+
+
+
 class Feed {
 
-  int feedId, type, likes;
-  String username, description,  time, title, avatarImg, bannerImg, location, comments, members;
+  int id, type, likes;
+  String username, content,  timestamp, title, avatarImg, bannerImg, city, comments, members;
 
-  Feed({required this.feedId,required  this.type,required  this.username,required  this.description,required, required this.time,required  this.title,required  this.avatarImg,required  this.bannerImg,required  this.location,required  this.likes,required  this.comments,required  this.members});
+  Feed({required this.id,required  this.type,required  this.username,required  this.content,required, required this.timestamp,required  this.title,required  this.avatarImg,required  this.bannerImg,required  this.city,required  this.likes,required  this.comments,required  this.members});
 }
 
 
@@ -41,75 +143,76 @@ class FeedBloc {
 
   List<Feed> feedList = [
 
+
     Feed(
-        feedId: 1,
+        id: 1,
         type: 0,
         username: 'rohit.shetty12',
-        description:
+        content:
         'I have been facing a few possible symptoms of skin cancer. I have googled the possibilities but i can thought i did asked the community instead...',
-        time: '1 min', // need to convert in min from backend
+        timestamp: '1 min', // need to convert in min from backend
         title: 'What Are The Sign And Symptoms Of Skin Cancer?',//title 
         avatarImg: 'https://www.w3schools.com/w3images/avatar1.png',
         bannerImg: 'https://www.w3schools.com/w3images/avatar1.png', // no need
-        location: 'Peninsula park Andheri, Mumbai', // city
+        city: 'Peninsula park Andheri, Mumbai', // city
         likes: 24,
         comments: '24',
         members: '24'
         ),
 
     Feed(
-        feedId: 2,
+        id: 2,
         type: 0,
         username: 'rohit.shetty02',
-        description:
+        content:
         'My husband has his 3 days transpalnt assessment in Newcastle next month, strange mix of emotions. for those that have been thought this how long did it take following assessment was it intil you were t...',
-        time: '10 min',
+        timestamp: '10 min',
         title: '',
         avatarImg: 'https://www.w3schools.com/w3images/avatar1.png',
         bannerImg: 'https://www.w3schools.com/w3images/avatar1.png',
-        location: 'Peninsula park Andheri, Mumbai',
+        city: 'Peninsula park Andheri, Mumbai',
         likes: 23,
         comments: '2',
         members: '12'),
 
     Feed(
-        feedId: 3,
+        id: 3,
         type: 0,
         username: 'username1275',
-        description: '',   
-        time: '10 min',
+        content: '',   
+        timestamp: '10 min',
         title: 'Cancer Meet At Rajiv Gandhi National Park',
         avatarImg: 'https://www.w3schools.com/w3images/avatar1.png',
         bannerImg: 'https://www.w3schools.com/w3images/avatar1.png',
-        location: 'Peninsula park Andheri, Mumbai',
+        city: 'Peninsula park Andheri, Mumbai',
         likes: 23,
         comments: '2',
         members: '12'),
 
     Feed(
-        feedId: 4,
+        id: 4,
         type: 0,
         username: 'super987',
-        description: '#itsokeyto #cancerserviver',  
-        time: '10 min',
+        content: '#itsokeyto #cancerserviver',  
+        timestamp: '10 min',
         title: 'Something To Motivate You',
         avatarImg: 'https://www.w3schools.com/w3images/avatar4.png',
         bannerImg: 'https://www.w3schools.com/w3images/avatar4.png',
-        location: 'Peninsula park Andheri, Mumbai',
+        city: 'Peninsula park Andheri, Mumbai',
         likes: 25,
         comments: '24',
         members: '18'),
 
     Feed(
-        feedId: 5,
+        id: 5,
         type: 0,
         username: 'username1275',
-        description: '#itsokeyto #cancerserviver',
-        time: '1 min',
+        content: '#itsokeyto #cancerserviver',
+        timestamp: '1 min',
         title: 'What is the best hospital in india for the cancer?',
         avatarImg: 'https://www.w3schools.com/w3images/avatar4.png',
         bannerImg: 'https://www.w3schools.com/w3images/avatar4.png',
-        location: 'Peninsula park Andheri, Mumbai',
+        city: 'Peninsula park Andheri, Mumbai',
         likes: 25,
         comments: '24',
         members: '18'),
@@ -144,7 +247,7 @@ class FeedBloc {
   {
     int like = feed.likes;
     int incrementLike = like + 1;
-    feedList[feed.feedId - 1].likes = like + incrementLike;
+    feedList[feed.id - 1].likes = like + incrementLike;
     feedListSink.add(feedList);
   }
 
@@ -152,7 +255,7 @@ class FeedBloc {
   {
     int like = feed.likes;
     int decrementLike = like - 1;
-    feedList[feed.feedId - 1].likes = like - decrementLike;
+    feedList[feed.id - 1].likes = like - decrementLike;
     feedListSink.add(feedList);
   }
 

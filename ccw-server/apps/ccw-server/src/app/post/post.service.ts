@@ -14,8 +14,35 @@ export class PostService {
         },
       });
     }
+
     allpost(){
-      return this.prismaService.post.findMany({});
+      return this.prismaService.post.findMany({
+        include: {
+          _count: {
+            select:{
+              upvotes: true,
+              comments: true
+            }
+          },
+          author: {
+            select:{
+              id: false,
+              email: false,
+              password: false,
+              timestamp: false,
+              profile: {
+                select: {
+                  id: false,
+                  userId: false,
+                  firstName: true,
+                  LastName: true,
+                  avatar: true
+                }
+              }
+            }
+          }
+        }
+      });
     }
   
     async posts(params: {
@@ -79,7 +106,31 @@ export class PostService {
       });
   
       const posts = await this.prismaService.post.findMany({
-        // select: { id: true, name: true, type: true },
+        include: {
+          _count: {
+            select:{
+              upvotes: true,
+              comments: true
+            }
+          },
+          author: {
+            select:{
+              id: false,
+              email: false,
+              password: false,
+              timestamp: false,
+              profile: {
+                select: {
+                  id: false,
+                  userId: false,
+                  firstName: true,
+                  LastName: true,
+                  avatar: true
+                }
+              }
+            }
+          }
+        },
         where: whereQuery,
         take: Number(size),
         skip: Number(size * offset),
