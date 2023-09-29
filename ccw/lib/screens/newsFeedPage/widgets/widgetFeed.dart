@@ -128,7 +128,7 @@ Widget feedNewsCardItem(BuildContext context, GptFeed feed) {
                 child: Text(feed.content,
                     style: TextStyle(fontSize: 14, color: Colors.grey))),
             space15(),
-            setLocation(feed),
+            setLocation(context,feed),
             Divider(thickness: 1),
             Row(
               children: <Widget>[
@@ -176,7 +176,7 @@ Widget feedNewsCardItemQuestion(BuildContext context, GptFeed feed) {
                     style:
                     TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
             space15(),
-            setLocation(feed),
+            setLocation(context,feed),
             space15(),
             questionPallet(),
             space15(),
@@ -236,7 +236,7 @@ Widget feedNewsCardWithImageItem(BuildContext context,GptFeed feed) {
 
             space15(),
             // shows location
-            setLocation(feed),
+            setLocation(context,feed),
             Divider(thickness: 1),
             Row(
               children: <Widget>[
@@ -336,7 +336,7 @@ Widget pollingCard(BuildContext context,GptFeed feed) {
             space15(),
             pollCartSection(),
             space15(),
-            setLocation(feed),
+            setLocation(context,feed),
             Divider(thickness: 1),
             Row(
               children: <Widget>[

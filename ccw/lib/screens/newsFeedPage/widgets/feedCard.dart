@@ -4,6 +4,7 @@ import 'package:ccw/screens/postpage/postdetail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ccw/screens/servicesPage/routeservice.dart';
 
 String formatTimestamp(String timestamp) {
   final DateTime dateTime = DateTime.parse(timestamp);
@@ -55,7 +56,7 @@ Widget feedCard(BuildContext context, GptFeed listFeed) {
               space15(),
               Text(listFeed.content, style: TextStyle(fontSize: 14, color: Colors.grey)),
               space15(),
-              setLocation(listFeed),
+              setLocation(context,listFeed),
               Divider(thickness: 1),
               Row(
                 children: <Widget>[
@@ -138,17 +139,25 @@ Widget likeCommentShare(BuildContext context,GptFeed listFeed) {
 
 
 
-Widget setLocation(GptFeed listFeed) {
-  return Row(
-    children: <Widget>[
-      Icon(Icons.location_on, color: Colors.teal),
-      SizedBox(width: 15),
-      Text(
-        listFeed.city,
-        style: TextStyle(fontSize: 12, color: Colors.teal),
-      ),
-    ],
-  );
+Widget setLocation(BuildContext context,GptFeed listFeed) {
+  return  GestureDetector(
+            onTap: ()=> Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RouteServicePage(feed: listFeed))) ,
+            child:
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.location_on, color: Colors.teal),
+                    SizedBox(width: 15),
+                    Text(
+                      listFeed.city,
+                      style: TextStyle(fontSize: 12, color: Colors.teal),
+                    ),
+                  ],
+                ),
+          );
+  
+  
+  
 }
 
 Widget userAvatarSection(BuildContext context, GptFeed listFeed) {
