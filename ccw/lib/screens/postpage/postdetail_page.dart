@@ -22,7 +22,7 @@ class PostPageDetails extends StatefulWidget {
 
 class _PostPageDetailsState extends State<PostPageDetails> {
   List commentList = [];
-
+List<Widget> newsCommentWidgetList=[];
  bool isLoading = false;
 
   String commentText = '';
@@ -34,9 +34,8 @@ class _PostPageDetailsState extends State<PostPageDetails> {
   }
 
   _getCommentsforPosts() async {
-
-    print('inside the get comments for posts');
-    print(widget.feed.id);
+    final prefs = await SharedPreferences.getInstance();
+    String? userInfo = prefs.getString('userinfo');
 
     if (isLoading) {
       return; // Prevent multiple simultaneous requests
@@ -56,21 +55,33 @@ class _PostPageDetailsState extends State<PostPageDetails> {
       print(content);
 
 
+      
+      if(userInfo != null) {
+          Map<String, dynamic> userInfoMap = json.decode(userInfo);
+          print("userInfo id ");
+          
 
-      setState(() {
-        commentList.addAll(content.map((json) {
-          print(json['user']['id']);
-          // if(json['user']['id'])
-          // newsFeedWidgetList.add(feedNewsCardItem(context, GptComment.fromJson(json)));
-          // newsFeedWidgetList.add(topSpace());
-          return GptComment.fromJson(json);
-        }).toList());
+      
 
-        
-        
-        isLoading = false;
-       
-      });
+          setState(() {
+            commentList.addAll(content.map((json) {
+              
+
+              if(json['user']['id'].toString()== userInfoMap['id'].toString()){
+                newsCommentWidgetList.add(commentReply(context, GptComment.fromJson(json)));
+                newsCommentWidgetList.add(topSpace());
+              }else{
+                newsCommentWidgetList.add(othersComment(context, GptComment.fromJson(json)));
+                newsCommentWidgetList.add(topSpace());
+              }
+             
+              return GptComment.fromJson(json);
+            }).toList());
+
+            isLoading = false;
+          
+          });
+      }
     }
 
   }
@@ -270,19 +281,17 @@ class _PostPageDetailsState extends State<PostPageDetails> {
                   ),
                 ),
 
-                //Reply and comment 1
-                SizedBox(height: 30),
-                othersComment(context,commentList[0]),
+                Column(
+                  children: newsCommentWidgetList.map((widget) {
+                    return Column(
+                      children: [
+                        // SizedBox(height: 30),
+                        widget,
+                      ],
+                    );
+                  }).toList(),
+                ),
 
-                
-
-                SizedBox(height: 30),
-                commentReply(context,commentList[1] ),
-
-                
-
-                // SizedBox(height: 30),
-                // othersCommentWithImageSlider(context, FeedBloc().feedList[2]),
 
                 Divider(thickness: 1),
                 _buildMessageComposer(),
