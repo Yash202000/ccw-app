@@ -22,7 +22,11 @@ export class CommentService {
     if(! post)  throw new  HttpException('post not found',HttpStatus.NOT_FOUND);
 
     return this.prismaService.comment.create({
-      data : createCommentDto
+      data : {
+        postId: createCommentDto.postId,
+        content: createCommentDto.content,
+        userId: Number(createCommentDto.userId)
+      }
     })
   }
 
@@ -45,8 +49,26 @@ export class CommentService {
       where: {
         id: id
       },
-      include: {
-        comments: true
+      select: {
+        id: true,
+        comments: {
+          select:{
+            content: true,
+            createdAt: true,
+            user:{
+              select:{
+                id: true,
+                profile: {
+                  select: {
+                    firstName: true,
+                    LastName: true,
+                    avatar: true
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     })
   }

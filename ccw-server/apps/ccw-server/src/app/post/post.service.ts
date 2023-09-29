@@ -26,19 +26,8 @@ export class PostService {
           },
           author: {
             select:{
-              id: false,
-              email: false,
-              password: false,
-              timestamp: false,
-              profile: {
-                select: {
-                  id: false,
-                  userId: false,
-                  firstName: true,
-                  LastName: true,
-                  avatar: true
-                }
-              }
+              id: true,
+              profile: true
             }
           }
         }
@@ -115,21 +104,16 @@ export class PostService {
           },
           author: {
             select:{
-              id: false,
-              email: false,
-              password: false,
-              timestamp: false,
+              id: true,
               profile: {
                 select: {
-                  id: false,
-                  userId: false,
                   firstName: true,
                   LastName: true,
                   avatar: true
                 }
               }
             }
-          }
+          },
         },
         where: whereQuery,
         take: Number(size),

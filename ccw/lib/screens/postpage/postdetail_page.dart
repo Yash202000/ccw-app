@@ -5,6 +5,11 @@ import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:ccw/screens/newsFeedPage/widgets/feedCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ccw/screens/newsFeedPage/widgets/ThumsUpReactions.dart';
+import 'package:ccw/consts/env.dart' show backendUrl;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class PostPageDetails extends StatefulWidget {
    final GptFeed feed;
@@ -16,14 +21,103 @@ class PostPageDetails extends StatefulWidget {
 }
 
 class _PostPageDetailsState extends State<PostPageDetails> {
-  @override
+  List commentList = [];
 
+ bool isLoading = false;
+
+  String commentText = '';
+
+  @override
+  void initState()  {
+    super.initState();
+    _getCommentsforPosts();
+  }
+
+  _getCommentsforPosts() async {
+
+    print('inside the get comments for posts');
+    print(widget.feed.id);
+
+    if (isLoading) {
+      return; // Prevent multiple simultaneous requests
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    var url = Uri.parse('$backendUrl/api/comment/${widget.feed.id}');
+
+    var response = await http.get(url);
+     if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      final content = jsonResponse['comments'];
+
+      print(content);
+
+
+
+      setState(() {
+        commentList.addAll(content.map((json) {
+          print(json['user']['id']);
+          // if(json['user']['id'])
+          // newsFeedWidgetList.add(feedNewsCardItem(context, GptComment.fromJson(json)));
+          // newsFeedWidgetList.add(topSpace());
+          return GptComment.fromJson(json);
+        }).toList());
+
+        
+        
+        isLoading = false;
+       
+      });
+    }
+
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     Widget _buildMessageComposer() {
 
       final GptFeed feed = widget.feed;
       print(feed.id);
 
+
+
+        Future<void> postComment(String text) async {
+
+          final prefs = await SharedPreferences.getInstance();
+          String? userInfo = prefs.getString('userinfo');
+
+          if(userInfo != null) {
+              Map<String, dynamic> userInfoMap = json.decode(userInfo);
+
+              final url = Uri.parse('$backendUrl/api/comment'); // Replace with your API endpoint
+              final body = jsonEncode({
+                'postId': feed.id, // Assuming 'postId' is the field to link the comment to a post
+                'content': text, // The text entered by the user
+                'userId': userInfoMap['id']
+              });
+
+              final response = await http.post(
+                url,
+                headers: {
+                  'Content-Type': 'application/json', // Adjust the headers as needed
+                },
+                body: body,
+              );
+
+              if (response.statusCode == 201) {
+                // Comment successfully posted, you can handle the response accordingly
+                print('Comment posted successfully');
+              } else {
+                // Handle the error if the request fails
+                print('Failed to post comment');
+              }
+          }
+
+        }
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         height: 70.0,
@@ -38,16 +132,29 @@ class _PostPageDetailsState extends State<PostPageDetails> {
             ),
             Expanded(
                 child: TextField(
-              textCapitalization: TextCapitalization.sentences,
-              onChanged: (value) {},
-              decoration:
-                  InputDecoration.collapsed(hintText: 'Add a cheerful comment'),
-            )),
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (value) {
+                    setState(() {
+                      commentText = value;
+                    }); // Update the comment text as the user types
+                  },
+                  decoration:
+                      InputDecoration.collapsed(hintText: 'Add a cheerful comment'),
+                )),
             IconButton(
               icon: Icon(Icons.send),
               iconSize: 25.0,
               color: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: () {
+                // Call the postComment method to send the comment text
+                if (commentText.isNotEmpty) {
+                  print(commentText);
+                  postComment(commentText);
+                  // Clear the text field after posting the comment
+                  commentText = '';
+                }
+
+              },
             ),
           ],
         ),
@@ -99,7 +206,7 @@ class _PostPageDetailsState extends State<PostPageDetails> {
                               child: Text(widget.feed.content,
                                   style: TextStyle(fontSize: 14, color: Colors.grey))),
                           space15(),
-                          setLocation(widget.feed),
+                          setLocation(context,widget.feed),
                           Divider(thickness: 1),
                           Row(
                             children: <Widget>[
@@ -165,32 +272,21 @@ class _PostPageDetailsState extends State<PostPageDetails> {
 
                 //Reply and comment 1
                 SizedBox(height: 30),
-                othersComment(context, FeedBloc().feedList[2]),
+                othersComment(context,commentList[0]),
 
-                //Reply and comment 1
-                SizedBox(height: 30),
-                othersCommentWithImageSlider(context, FeedBloc().feedList[2]),
-
-                //Reply and comment 1
-                SizedBox(height: 30),
-                othersComment(context, FeedBloc().feedList[2]),
+                
 
                 SizedBox(height: 30),
-                othersComment(context, FeedBloc().feedList[2]),
+                commentReply(context,commentList[1] ),
 
-                SizedBox(height: 30),
-                commentReply(context, FeedBloc().feedList[2]),
+                
 
-                SizedBox(height: 30),
-                othersComment(context, FeedBloc().feedList[2]),
+                // SizedBox(height: 30),
+                // othersCommentWithImageSlider(context, FeedBloc().feedList[2]),
 
-                SizedBox(height: 30),
-                othersCommentWithImageSlider(context, FeedBloc().feedList[2]),
-
-                SizedBox(height: 30),
-                othersComment(context, FeedBloc().feedList[2]),
-
-                _buildMessageComposer()
+                Divider(thickness: 1),
+                _buildMessageComposer(),
+                Divider(thickness: 1),
               ],
             ),
           ),

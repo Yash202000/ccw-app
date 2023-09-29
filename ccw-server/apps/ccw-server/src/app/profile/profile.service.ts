@@ -22,7 +22,7 @@ export class ProfileService {
     async editProfile(data:ProfileResponseDto): Promise<ProfileResponseDto>{
        const updatedProfile = await this.prismaService.userProfile.update({
             where:{
-                userId: data.userId
+                userId:  Number(data.userId)
             },
             data:{
                 firstName: data.firstName,

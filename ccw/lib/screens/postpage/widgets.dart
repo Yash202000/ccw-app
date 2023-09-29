@@ -10,7 +10,7 @@ Widget linearProgressIndicator() {
   );
 }
 
-Widget othersComment(BuildContext context, Feed feed) {
+Widget othersComment(BuildContext context, GptComment comment) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -20,7 +20,7 @@ Widget othersComment(BuildContext context, Feed feed) {
             backgroundColor: Colors.grey,
             child: ClipOval(
                 child: Image.network(
-                    'https://www.w3schools.com/w3images/avatar4.png')),
+                    comment.author.profile.avatar)),
             radius: 20),
         SizedBox(width: 20),
         Expanded(
@@ -35,18 +35,18 @@ Widget othersComment(BuildContext context, Feed feed) {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: <Widget>[
-                  usernameSectionWithoutAvatar(context),
+                  usernameSectionWithoutAvatar(context,comment),
                   space15(),
                   Text(
-                      'Not sure about rights. Looks like its matter of concern that our shool dont take it seriously such matters and trats it like lightly that it is fault of student',
+                      comment.content,
                       softWrap: true,
                       maxLines: 3,
                       style: TextStyle(fontSize: 14)),
-                  space15(),
-                  Divider(thickness: 1),
-                  SizedBox(height: 10),
-                  // menuReply(feed),
-                  space15(),
+                  // space15(),
+                  // Divider(thickness: 1),
+                  // SizedBox(height: 10),
+                  // // menuReply(feed),
+                  // space15(),
                 ],
               ),
             ),
@@ -59,7 +59,7 @@ Widget othersComment(BuildContext context, Feed feed) {
   );
 }
 
-Widget othersCommentWithImageSlider(BuildContext context, Feed feed) {
+Widget othersCommentWithImageSlider(BuildContext context, GptComment feed) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -84,7 +84,7 @@ Widget othersCommentWithImageSlider(BuildContext context, Feed feed) {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: <Widget>[
-                  usernameSectionWithoutAvatar(context),
+                  usernameSectionWithoutAvatar(context,feed),
                   space15(),
                   Text(
                       'Not sure about rights. Looks like its matter of concern that our shool dont take it seriously such matters and trats it like lightly that it is fault of student',
@@ -209,7 +209,7 @@ Widget menuReply(GptFeed listFeed) {
   );
 }
 
-Widget usernameSectionWithoutAvatar(BuildContext context) {
+Widget usernameSectionWithoutAvatar(BuildContext context,GptComment comment) {
   return Row(
     children: <Widget>[
       Expanded(
@@ -224,7 +224,7 @@ Widget usernameSectionWithoutAvatar(BuildContext context) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('username1275',
+                        Text(comment.author.profile.firstName +" "+comment.author.profile.lastName ,
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         SizedBox(
@@ -235,7 +235,7 @@ Widget usernameSectionWithoutAvatar(BuildContext context) {
                       ],
                     ),
                     SizedBox(height: 4),
-                    Text('DIAGNOSE RECENTRLY',
+                    Text('user description',
                         style: TextStyle(fontSize: 12, color: Colors.teal)),
                   ],
                 )
@@ -249,7 +249,7 @@ Widget usernameSectionWithoutAvatar(BuildContext context) {
   );
 }
 
-Widget commentReply(BuildContext context, Feed feed) {
+Widget commentReply(BuildContext context, GptComment comment) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -270,16 +270,11 @@ Widget commentReply(BuildContext context, Feed feed) {
                   //usernameSectionWithoutAvatar(context),
                   //space15(),
                   Text(
-                      'Not sure about rights. Looks like its matter of concern that our shool dont take it seriously such matters and trats it like lightly that it is fault of student',
+                      comment.content,
                       softWrap: true,
                       maxLines: 3,
                       style: TextStyle(fontSize: 14)),
-                  space15(),
-
-                  Divider(thickness: 1),
-                  SizedBox(height: 10),
-                  // menuCommentReply(feed),
-                  space15(),
+                  
                 ],
               ),
             ),

@@ -19,8 +19,6 @@ class Author {
   Author({required this.profile});
 
   factory Author.fromJson(Map<String, dynamic> json) {
-    print('inside the author class from json ');
-    print(json);
     return Author(
       profile: Profile.fromJson(json['profile']),
     );
@@ -109,6 +107,37 @@ class GptFeed {
     );
   }
 }
+
+
+
+
+class GptComment {
+ 
+  final String content;
+  
+  final Author author;
+  
+  final String createdAt;
+
+  GptComment({
+    
+    required this.content,
+    
+    required this.author,
+    
+    required this.createdAt,
+  });
+  factory GptComment.fromJson(Map<String, dynamic> json) {
+    return GptComment(
+    
+    content: json['content'],
+   
+    createdAt: json['createdAt'],
+    author: Author.fromJson(json['user']), // Parse Author
+    );
+  }
+}
+
 
 
 

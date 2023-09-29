@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         elevation: 0,
       ),
       bottomNavigationBar: FABBottomAppBar(
-        centerItemText: 'centerfabbuttonappbar',
+        centerItemText: '',
         backgroundColor: (Colors.black54),
         color: (Colors.grey[700])!,
         selectedColor: Theme.of(context).colorScheme.secondary,
