@@ -57,6 +57,7 @@ export class PostService {
       city: string,
       title: string,
       content: string,
+      userId: number,
       sortBy: string,
       sortOrder: 'asc' | 'desc'
     ): Promise<FilterPostsResponseDto> {
@@ -114,6 +115,14 @@ export class PostService {
               }
             }
           },
+          upvotes:{
+            where:{
+              userId:userId
+            },
+            select: {
+              id: true
+            }
+          }
         },
         where: whereQuery,
         take: Number(size),

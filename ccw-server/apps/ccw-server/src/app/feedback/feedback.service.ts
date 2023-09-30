@@ -6,13 +6,17 @@ import { FeedbackCreateDto, FeedbackResponseDto } from './dto/feedback.dto';
 export class FeedbackService {
     private prismaService = new PrismaClient()
 
+    findAll(){
+        return this.prismaService.userFeedBack.findMany({});
+    }
+
 
     async giveFeedback(body: FeedbackCreateDto): Promise<FeedbackResponseDto>{
         const feedback  = await this.prismaService.userFeedBack.create({
             data: {
-                rating : body.rating,
+                rating : Number(body.rating),
                 feedback: body.feedback,
-                authorId: body.authorId
+                authorId: Number(body.authorId)
             }
         })
         if(!feedback) throw new HttpException("Error in feedback creation", HttpStatus.NOT_ACCEPTABLE);
