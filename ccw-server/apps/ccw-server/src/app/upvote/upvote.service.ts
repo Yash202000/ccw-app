@@ -7,22 +7,35 @@ import { CreateUpvoteDto } from './dto/create-upvote.dto';
 export class UpvoteService {
   private prismaService = new PrismaClient()
 
-  create(createUpvoteDto: CreateUpvoteDto) {
-    const user = this.prismaService.user.findUnique({
+  async create(createUpvoteDto: CreateUpvoteDto) {
+    const user = await this.prismaService.user.findUnique({
       where: {
-        id: createUpvoteDto.userId
+        id: Number(createUpvoteDto.userId)
       }
     })
     if(!user) throw new HttpException('user not found', HttpStatus.NOT_FOUND);
 
-    const post = this.prismaService.post.findUnique({
+    const post = await this.prismaService.post.findUnique({
       where: {
-        id: createUpvoteDto.postId
+        id: Number(createUpvoteDto.postId)
       }
     })
     if(!post) throw new HttpException('post not found', HttpStatus.NOT_FOUND);
+
+    const existingUpvote = await this.prismaService.upvote.findFirst({
+      where: {
+        userId: Number(createUpvoteDto.userId),
+        postId: Number(createUpvoteDto.postId)
+      }
+    })
+    console.log(existingUpvote);
+    console.log(createUpvoteDto.userId,createUpvoteDto.postId);
+    if(existingUpvote) throw new HttpException('upvote already exist!', HttpStatus.NOT_FOUND);
     return this.prismaService.upvote.create({
-      data: createUpvoteDto
+      data: {
+        userId: Number(createUpvoteDto.userId),
+        postId: Number(createUpvoteDto.postId)
+      }
     })
   }
 

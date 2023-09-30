@@ -1,10 +1,14 @@
 import 'package:ccw/screens/newsFeedPage/widgets/ThumsUpReactions.dart';
 import 'package:ccw/screens/newsFeedPage/widgets/feedBloc.dart';
 import 'package:ccw/screens/postpage/postdetail_page.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ccw/screens/servicesPage/routeservice.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ccw/consts/env.dart' show backendUrl;
 
 String formatTimestamp(String timestamp) {
   final DateTime dateTime = DateTime.parse(timestamp);
@@ -84,16 +88,54 @@ Widget feedCard(BuildContext context, GptFeed listFeed) {
 
 
 Widget likeCommentShare(BuildContext context,GptFeed listFeed) {
+  
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
       GestureDetector(
-          onTap: () {
-            print('FB Reactions Tapped');
-            print(listFeed.isupvote);
-            FbReactionBox();
+          onTap: () async {
+              if (!listFeed.isupvote) {
+                // If the user has not upvoted, perform the upvote action
+                // Here, you can call your API to upvote and handle the response accordingly
+               
+
+                final prefs = await SharedPreferences.getInstance();
+                String? userInfo = prefs.getString('userinfo');
+                if(userInfo != null){
+                    Map<String, dynamic> userInfoMap = json.decode(userInfo);
+                    final String apiUrl = '$backendUrl/api/upvote';
+                    
+                    try {
+                      print(listFeed.id);
+                      print(userInfoMap['id'] );
+                        final response = await http.post(
+                        Uri.parse(apiUrl),
+                        body: {
+                                "postId": listFeed.id.toString(),
+                                "userId":  userInfoMap['id'].toString() 
+                            },
+                        );
+                        print('upvote success');
+
+                        if (response.statusCode == 201) {
+                        // Profile updated successfully
+                        print('upvote added successfully');
+                        // listFeed.isupvote =true;
+                        
+                        } else {
+                        // Handle other status codes or errors
+                        print('Failed to update profile');
+                        }
+                    } catch (e) {
+                        // Handle network errors or exceptions
+                        print('Error: $e');
+                    }
+                }
+                
+              }
+
           },
           child: Row(
             children: <Widget>[
