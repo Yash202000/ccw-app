@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:password@192.168.120.55:5432/ccw?schema=public"
+  url      = "postgresql://postgres:password@192.168.43.135:5432/ccw?schema=public"
   // url      = env("DATABASE_URL")
 }
 
@@ -99,3 +99,15 @@ model UserFeedBack{
    author    User   @relation(fields: [authorId], references: [id],onDelete: Cascade)
    @@map("user_feedbacks")
 }
+
+
+// model GreenCoin {
+//   id         Int      @default(autoincrement()) @id @map("id")
+//   userId     Int      @map("user_id") @unique
+//   coins      Int      @map("coins")
+//   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+//   user       User     @relation(fields: [userId], references: [id])
+  
+//   @@map("green_coins")
+// }

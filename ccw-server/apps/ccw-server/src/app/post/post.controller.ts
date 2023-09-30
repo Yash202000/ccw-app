@@ -63,6 +63,7 @@ export default class PostController {
         @Query('city') city?: string,
         @Query('title') title?: string,
         @Query('content') content?: string,
+        @Query('userId') userId?: string,
         @Query('sortBy') sortBy?: string,
         @Query('sortOrder') sortOrder?: 'asc' | 'desc'
       ): Promise<FilterPostsResponseDto> {
@@ -72,6 +73,7 @@ export default class PostController {
           city,
           title,
           content,
+          +userId,
           sortBy,
           sortOrder
         );
