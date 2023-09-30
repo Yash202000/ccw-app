@@ -5,6 +5,7 @@ import 'package:ccw/components/components.dart';
 import 'package:ccw/screens/welcome.dart';
 import 'package:ccw/consts/env.dart' show backendUrl;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ccw/screens/feedback/feedbackScreen.dart';
 
 class Profile {
   String firstName;
@@ -148,7 +149,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: Text('Profile'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -189,6 +190,15 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 _editProfile(profile);
               },
               child: Text('Save Profile'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                
+                Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserFeedbackWidget()));
+                  
+              },
+              child: Text('Rate Us'),
             ),
           ],
         ),

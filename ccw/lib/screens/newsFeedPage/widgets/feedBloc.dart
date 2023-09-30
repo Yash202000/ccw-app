@@ -76,6 +76,7 @@ class GptFeed {
   final Count count;
   final bool published;
   final String timestamp;
+  final bool isupvote;
 
   GptFeed({
     required this.id,
@@ -89,6 +90,7 @@ class GptFeed {
     required this.count,
     required this.published,
     required this.timestamp,
+    required this.isupvote,
   });
   factory GptFeed.fromJson(Map<String, dynamic> json) {
     return GptFeed(
@@ -102,6 +104,7 @@ class GptFeed {
     
     published: json['published'],
     timestamp: json['timestamp'],
+    isupvote: json['upvotes'].length>0? true:false,
     author: Author.fromJson(json['author']), // Parse Author
     count: Count.fromJson(json['_count']),      // Parse Count
     );

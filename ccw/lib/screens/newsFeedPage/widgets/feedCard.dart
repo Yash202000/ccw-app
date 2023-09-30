@@ -92,6 +92,7 @@ Widget likeCommentShare(BuildContext context,GptFeed listFeed) {
       GestureDetector(
           onTap: () {
             print('FB Reactions Tapped');
+            print(listFeed.isupvote);
             FbReactionBox();
           },
           child: Row(
@@ -99,6 +100,7 @@ Widget likeCommentShare(BuildContext context,GptFeed listFeed) {
               Icon(
                 FontAwesomeIcons.thumbsUp,
                 size: 18,
+                color: listFeed.isupvote ? Colors.blue : Colors.black, // Change color based on upvote status
               ),
               SizedBox(width: 5),
               Text('${listFeed.count.upvotes}')

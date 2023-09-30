@@ -7,6 +7,7 @@ import 'package:ccw/screens/newsFeedPage/FeedLatestArticle.dart';
 import 'package:http/http.dart' as http;
 import 'package:ccw/consts/env.dart' show backendUrl;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsFeed extends StatefulWidget {
 
@@ -40,29 +41,39 @@ class _NewsFeedState extends State<NewsFeed> {
       isLoading = true;
     });
 
-    var url = Uri.parse('$backendUrl/api/post/filtered-posts?pageSize=$pageSize&pageOffset=$pageOffset');
+    final prefs = await SharedPreferences.getInstance();
+    String? userInfo = prefs.getString('userinfo');
 
-    print('$backendUrl/api/post/filtered-posts?pageSize=$pageSize&pageOffset=$pageOffset');
+    if(userInfo != null) {
+        Map<String, dynamic> userInfoMap = json.decode(userInfo);
+    
+      String currentUserId = userInfoMap['id'];
 
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      final content = jsonResponse['content'];
-
+      var url = Uri.parse("$backendUrl/api/post/filtered-posts?pageSize=$pageSize&pageOffset=$pageOffset&userId=$currentUserId");
 
 
-      setState(() {
-        feedList.addAll(content.map((json) {
-          newsFeedWidgetList.add(feedNewsCardItem(context, GptFeed.fromJson(json)));
-          newsFeedWidgetList.add(topSpace());
-          return GptFeed.fromJson(json);
-        }).toList());
+      var response = await http.get(url);
 
-        isVisible = true;
-        isLoading = false;
-        pageOffset += 1; // Increment the page offset for the next page
-      });
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final content = jsonResponse['content'];
+
+
+
+        setState(() {
+          feedList.addAll(content.map((json) {
+            print('upvotes are: ');
+            print(json['upvotes'].length);
+            newsFeedWidgetList.add(feedNewsCardItem(context, GptFeed.fromJson(json)));
+            newsFeedWidgetList.add(topSpace());
+            return GptFeed.fromJson(json);
+          }).toList());
+
+          isVisible = true;
+          isLoading = false;
+          pageOffset += 1; // Increment the page offset for the next page
+        });
+      }
     }
   }
 
