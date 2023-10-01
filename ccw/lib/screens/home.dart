@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         onTabSelected: _selectedTab,
         items: [
           FABBottomAppBarItem(iconData: FontAwesomeIcons.listAlt, text: 'Feed'),
-          FABBottomAppBarItem(iconData: FontAwesomeIcons.book, text: 'Library'),
+          FABBottomAppBarItem(iconData: FontAwesomeIcons.book, text: 'Requests'),
           FABBottomAppBarItem(
               iconData: FontAwesomeIcons.comments, text: 'Messages'),
           FABBottomAppBarItem(

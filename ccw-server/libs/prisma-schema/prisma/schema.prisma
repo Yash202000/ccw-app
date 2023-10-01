@@ -17,8 +17,10 @@ model User {
   password  String @map("password")
   timestamp DateTime @default(now()) @map("timestamp") @db.Timestamptz()
   
-  profile UserProfile? 
+  profile UserProfile?
+  coins   GreenCoin?
 
+  logs   Log[]
   posts Post[]
   comments  Comment[]
   upvotes   Upvote[]
@@ -55,14 +57,25 @@ model Post {
   latitude  Float   @map("latitude")
   longitude Float   @map("longitude")
   published Boolean? @default(false) @map("published")
+  statusId  Int      @map("status_id")
   timestamp DateTime @default(now()) @map("timestamp") @db.Timestamptz() 
-  authorId  Int  @map("author_id")
+  authorId  Int      @map("author_id")
   comments  Comment[]
   upvotes   Upvote[]
 
+  status   Status     @relation(fields: [statusId], references: [id])
   author    User?    @relation(fields: [authorId], references: [id],onDelete: Cascade)
 
   @@map("posts")
+}
+
+model Status {
+  id      Int       @id @default(autoincrement())
+  name    String
+  posts   Post[]
+
+  @@unique([ name])
+  @@map("statuses")
 }
 
 model Upvote {
@@ -101,13 +114,25 @@ model UserFeedBack{
 }
 
 
-// model GreenCoin {
-//   id         Int      @default(autoincrement()) @id @map("id")
-//   userId     Int      @map("user_id") @unique
-//   coins      Int      @map("coins")
-//   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz()
+model GreenCoin {
+  id         Int      @default(autoincrement()) @id @map("id")
+  userId     Int      @map("user_id") @unique
+  coins      Int      @map("coins")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
-//   user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   
-//   @@map("green_coins")
-// }
+  @@map("green_coins")
+}
+
+
+model Log {
+  id         Int      @default(autoincrement()) @id @map("id")
+  userId     Int      @map("user_id")
+  message    String   @map("message")
+  timestamp  DateTime @default(now()) @map("timestamp") @db.Timestamptz()
+
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("logs")
+}

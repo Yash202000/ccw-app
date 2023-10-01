@@ -34,6 +34,15 @@ export class ProfileService {
             }
         })
         if(!updatedProfile) throw new HttpException("profile is not updated",HttpStatus.INTERNAL_SERVER_ERROR);
+        const updateLog = await this.prismaService.log.create({
+            data:{
+                userId:Number(data.userId),
+                message: "profile updated successfully!"
+            }
+        })
+        if(!updateLog) throw new HttpException("log is not updated",HttpStatus.INTERNAL_SERVER_ERROR);
+        
+
         return updatedProfile;
     }
 }

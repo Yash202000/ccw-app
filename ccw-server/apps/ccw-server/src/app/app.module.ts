@@ -9,6 +9,8 @@ import { ProfileModule } from './profile/profile.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { CommentModule } from './comment/comment.module';
 import { UpvoteModule } from './upvote/upvote.module';
+import { LogController } from './log/log.controller';
+import { LogService } from './log/log.service';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { UpvoteModule } from './upvote/upvote.module';
     CommentModule,
     UpvoteModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, LogController],
+  providers: [AppService, LogService],
 })
 export class AppModule {}

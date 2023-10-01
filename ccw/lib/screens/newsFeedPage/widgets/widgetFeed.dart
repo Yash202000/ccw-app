@@ -152,6 +152,62 @@ Widget feedNewsCardItem(BuildContext context, GptFeed feed) {
   );
 }
 
+
+
+
+Widget feedLibraryCardItem(BuildContext context, GptFeed feed) {
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        border: Border.all(style: BorderStyle.solid, color: Colors.grey, width: 0.5)
+    ),
+    child: Card(
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            renderCategoryTime(feed),
+            // space10(),
+            // userAvatarSection(context, feed),
+            // space15(),
+            Visibility(
+                visible: feed.title.isEmpty == true ? false : true,
+                child: Text(feed.title,
+                    softWrap: true,
+                    maxLines: 2,
+                    style:
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+            space15(),
+            // Visibility(
+            //     visible: feed.content.isEmpty == true ? false : true,
+            //     child: Text(feed.content,
+            //         style: TextStyle(fontSize: 14, color: Colors.grey))),
+            space15(),
+            setLocation(context,feed),
+            Divider(thickness: 1),
+            Row(
+              children: <Widget>[
+                Icon(FontAwesomeIcons.addressBook),
+                SizedBox(width: 10),
+                Text(
+                  '${feed.count.upvotes} Members supported the post',
+                  style: TextStyle(
+                      fontSize: 14, color: Theme.of(context).primaryColor),
+                ),
+              ],
+            ),
+            Divider(thickness: 1),
+            SizedBox(height: 10),
+            likeCommentShare(context,feed),
+            space15(),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 Widget feedNewsCardItemQuestion(BuildContext context, GptFeed feed) {
   return Container(
     decoration: BoxDecoration(

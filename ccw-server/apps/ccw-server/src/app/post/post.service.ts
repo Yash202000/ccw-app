@@ -58,6 +58,7 @@ export class PostService {
       title: string,
       content: string,
       userId: number,
+      self: boolean,
       sortBy: string,
       sortOrder: 'asc' | 'desc'
     ): Promise<FilterPostsResponseDto> {
@@ -65,6 +66,10 @@ export class PostService {
       let whereQuery = {};
   
       //TODO: just uncomment and you will get for and query in findmany
+      if(self !== undefined){
+        whereArray.push({ authorId :  userId  });
+      }
+      
       if (city !== undefined) {
         whereArray.push({ city:  city  });
       }
