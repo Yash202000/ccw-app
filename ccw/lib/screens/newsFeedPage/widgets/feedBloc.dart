@@ -10,6 +10,18 @@
 
 import 'dart:async';
 
+class Status {
+  final String name;
+  
+
+  Status({required this.name});
+
+  factory Status.fromJson(Map<String, dynamic> json) {
+    return Status(
+      name: json['name']
+    );
+  }
+}
 
 
 
@@ -77,6 +89,7 @@ class GptFeed {
   final bool published;
   final String timestamp;
   final bool isupvote;
+  final Status status;
 
   GptFeed({
     required this.id,
@@ -91,6 +104,7 @@ class GptFeed {
     required this.published,
     required this.timestamp,
     required this.isupvote,
+    required this.status,
   });
   factory GptFeed.fromJson(Map<String, dynamic> json) {
     return GptFeed(
@@ -101,7 +115,7 @@ class GptFeed {
     city: json['city'],
     latitude: json['latitude'],
     longitude: json['longitude'],
-    
+    status: Status.fromJson(json['status']),
     published: json['published'],
     timestamp: json['timestamp'],
     isupvote: json['upvotes'].length>0? true:false,

@@ -266,7 +266,65 @@ Widget space15() {
   return SizedBox(height: 10);
 }
 
+Widget getStatusTag(String statusName) {
+  Color tagColor;
+  String tagLabel;
+
+  switch (statusName) {
+    case 'Open':
+      tagColor = Colors.green;
+      tagLabel = 'Open';
+      break;
+    case 'In Progress':
+      tagColor = Colors.blue;
+      tagLabel = 'In Progress';
+      break;
+    case 'Review':
+      tagColor = Colors.orange;
+      tagLabel = 'Review';
+      break;
+    case 'Resolved':
+      tagColor = Colors.purple;
+      tagLabel = 'Resolved';
+      break;
+    case 'Reopened':
+      tagColor = Colors.red;
+      tagLabel = 'Reopened';
+      break;
+    case 'On Hold':
+      tagColor = Colors.yellow;
+      tagLabel = 'On Hold';
+      break;
+    case 'Invalid':
+      tagColor = Colors.grey;
+      tagLabel = 'Invalid';
+      break;
+    case 'Blocked':
+      tagColor = Colors.black;
+      tagLabel = 'Blocked';
+      break;
+    default:
+      tagColor = Colors.grey;
+      tagLabel = 'Unknown';
+      break;
+  }
+
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    decoration: BoxDecoration(
+      color: tagColor,
+      borderRadius: BorderRadius.circular(4),
+    ),
+    child: Text(
+      tagLabel,
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),
+  );
+}
+
+
 Widget renderCategoryTime(GptFeed listFeed) {
+   final statusTag = getStatusTag(listFeed.status.name);
   
   final formattedTime = formatTimestamp(listFeed.timestamp);
   print(formattedTime);
@@ -275,8 +333,7 @@ Widget renderCategoryTime(GptFeed listFeed) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
-      Text('',
-          style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+      statusTag,
       Text(formattedTime,
           style: TextStyle(fontSize: 14, color: Colors.grey[700])),
     ],

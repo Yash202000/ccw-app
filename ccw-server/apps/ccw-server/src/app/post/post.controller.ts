@@ -27,6 +27,13 @@ export default class PostController {
         return this.postService.allpost();
     }
 
+    @ApiOperation({ summary: 'Get all locations' })
+    @ApiResponse({ status: 200, description: 'Success',  })
+    @Get('/all-locations')
+    getallLocations()  {
+        return this.postService.getLatLangs();
+    }
+
     @ApiOperation({ summary: 'Get posts' })
     @ApiResponse({ status: 200, description: 'Success', type: [PostResponseDto] })
     @Get('feed')

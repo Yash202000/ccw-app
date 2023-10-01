@@ -45,6 +45,8 @@ List<Widget> newsCommentWidgetList=[];
       isLoading = true;
     });
 
+    print('before comment status for request is ');
+    print(widget.feed.status.name);
     var url = Uri.parse('$backendUrl/api/comment/${widget.feed.id}');
 
     var response = await http.get(url);

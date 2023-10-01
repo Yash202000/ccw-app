@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaClient,Prisma ,Post} from '@prisma/client';
 import { FilterPostsResponseDto, PostCreateDto, PostResponseDto } from './dto/post.dto';
 
@@ -22,6 +22,11 @@ export class PostService {
             select:{
               upvotes: true,
               comments: true
+            }
+          },
+          status: {
+            select:{
+              name: true
             }
           },
           author: {
@@ -108,6 +113,11 @@ export class PostService {
               comments: true
             }
           },
+          status: {
+            select:{
+              name: true
+            }
+          },
           author: {
             select:{
               id: true,
@@ -147,9 +157,22 @@ export class PostService {
         content: posts,
       };
     }
+
+
+    async getLatLangs(){
+
+      const latlangs = await this.prismaService.post.findMany({
+        select:{
+          latitude: true,
+          longitude: true
+        },
+        
+      });
+      return latlangs; 
+    }
   
   
-    createPost(data: PostCreateDto): Promise<PostResponseDto> {
+   async createPost(data: PostCreateDto): Promise<PostResponseDto> {
 
     // createPost(data: PostCreateDto,file): Promise<PostResponseDto> {
       
@@ -158,19 +181,33 @@ export class PostService {
       const imageurl = 'test 1 file'
       // console.log(imageurl);
 
-      return this.prismaService.post.create({
+      const newPost = await this.prismaService.post.create({
         data:{
             title: data.title,
             content: data.content,
             imageUrl: imageurl,
             city: data.city,
+            statusId: 1,
             latitude: parseFloat(data.latitude),
             longitude: parseFloat(data.longitude),
             published: Boolean(data.published),
             authorId: Number(data.authorId)
         },
       });
+      if(!newPost)  throw new HttpException("log is not updated",HttpStatus.INTERNAL_SERVER_ERROR);
+        const updateLog = await this.prismaService.log.create({
+          data:{
+              userId:Number(data.authorId),
+              message: `Request no ${newPost.id} Opened successfully!`
+          }
+      })
+      if(!updateLog) throw new HttpException("log is not updated",HttpStatus.INTERNAL_SERVER_ERROR);
+
+      return newPost;
+    
     }
+
+
   
     async updatePost(params: {
       where: Prisma.PostWhereUniqueInput;
