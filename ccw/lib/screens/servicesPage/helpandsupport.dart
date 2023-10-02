@@ -20,25 +20,15 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
           return Container(
             margin: EdgeInsets.all(8.0),
             child: Card(
-              child: ExpansionPanelList(
-                elevation: 1,
-                expandedHeaderPadding: EdgeInsets.all(0),
-                expansionCallback: (int index, bool isExpanded) {
-                  setState(() {
-                    item.isExpanded = !isExpanded;
-                  });
-                },
+              child: ExpansionTile(
+                iconColor: Colors.blue, // Icon color for the expansion tile
+                title: Text(item.question),
                 children: [
-                  ExpansionPanel(
-                    headerBuilder: (BuildContext context, bool isExpanded) {
-                      return ListTile(
-                        title: Text(item.question),
-                      );
-                    },
-                    body: ListTile(
-                      title: Text(item.answer),
+                  ListTile(
+                    title: Text(
+                      item.answer,
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                    isExpanded: item.isExpanded,
                   ),
                 ],
               ),
@@ -62,12 +52,21 @@ class Item {
 }
 
 List<Item> generateItems(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      question: 'Question ${index + 1}',
-      answer: 'Answer to question ${index + 1}',
-    );
-  });
+   return [
+    Item(
+      question: 'How do I report an illegal garbage dumping incident?',
+      answer: 'To report an incident, open the Clean City Watch app, navigate to the "Report" section, and provide details about the location and situation. You can also attach photos as evidence.',
+    ),
+    Item(
+      question: 'Is the app available for both Android and iOS devices?',
+      answer: 'Yes, the Clean City Watch app is available for both Android and iOS devices. You can download it from the respective app stores.',
+    ),
+    Item(
+      question: 'Can I track the status of my reported incidents?',
+      answer: "Yes, you can track the status of your reported incidents by going to the 'My Reports' section in the app. You'll receive updates as authorities address the issues.",
+    ),
+    // Add more FAQ items here...
+  ];
 }
 
 

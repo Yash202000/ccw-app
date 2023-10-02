@@ -217,6 +217,43 @@ export class UserService {
   }
 
 
+  
+  async getAllCount(userid: number){
+
+    // Open, In Progress, Review, Resolved, Reopened, On Hold,Invalid,Blocked
+
+    const allCountbyId = await this.prismaService.user.findMany({
+        select: {
+          coins: true,
+          timestamp: true,
+          _count:{
+            select:{
+              posts: true,
+              comments: true,
+              upvotes: true,
+              feedbacks: true
+            },
+            
+          }
+        },
+        where: {
+          id: userid
+        }
+    });
+    return allCountbyId;
+
+}
+
+
+async getCount(){
+  
+  const allCount = await this.prismaService.user.count();
+  return allCount;
+
+}
+
+
+
   async updateUser(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;

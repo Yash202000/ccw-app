@@ -42,6 +42,13 @@ export class UserController {
         return this.userService.users({});
     }
 
+    @ApiOperation({ summary: 'Get user count ' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @Get('count')
+    async getCount(){
+        return this.userService.getCount();
+    }
+
     
     @ApiOperation({ summary: 'Get user by id' })
     @ApiParam({ name: 'id', type: 'string', description: 'Example ID: 1' })
@@ -51,6 +58,17 @@ export class UserController {
         return this.userService.user(+id);
     }
 
+
+    
+    @ApiOperation({ summary: 'Get all count by id' })
+    @ApiParam({ name: 'id', type: 'string', description: 'Example ID: 1' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @Get('count/:id')
+    async getAllCount(@Param('id') id:number){
+        return this.userService.getAllCount(+id);
+    }
+
+   
     
 
 

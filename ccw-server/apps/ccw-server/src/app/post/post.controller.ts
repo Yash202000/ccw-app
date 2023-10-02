@@ -27,6 +27,28 @@ export default class PostController {
         return this.postService.allpost();
     }
 
+    @ApiOperation({ summary: 'get posts count' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @Get('count')
+    getallpostsCount() {
+        return this.postService.getPostCount();
+    }
+
+    @ApiOperation({ summary: 'get posts count by status' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @Get('status/count')
+    getallpostsCountbyStatus() {
+        return this.postService.getPostCountbyStatus();
+    }
+
+    @ApiOperation({ summary: 'get posts status count for user' })
+    @ApiParam({ name: 'id', type: 'string', description: 'Example ID: 1' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @Get('status/count/:userid')
+    getallpostsCountbyStatusPerUser(@Param('userid') userid:number) {
+        return this.postService.getallpostsCountbyStatusPerUser(+userid);
+    }
+
     @ApiOperation({ summary: 'Get all locations' })
     @ApiResponse({ status: 200, description: 'Success',  })
     @Get('/all-locations')

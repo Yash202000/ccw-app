@@ -170,7 +170,192 @@ export class PostService {
       });
       return latlangs; 
     }
-  
+
+    async getallpostsCountbyStatusPerUser(userid: number){
+      const openposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 1
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      let returnCount = {};
+      
+      if(openposts.length!=0){
+        returnCount['open'] = openposts[0].posts.length
+      }else{
+        returnCount['open'] = 0
+      }
+      const inprogressposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 2
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(inprogressposts.length!=0){
+        returnCount['inprogress'] = inprogressposts[0].posts.length
+      }else{
+        returnCount['inprogress'] = 0
+      }
+      const inreviewposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 3
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(inreviewposts.length!=0){
+        returnCount['inreview'] =inreviewposts[0].posts.length
+      }else{
+        returnCount['inreview'] = 0
+      }
+      const resolvedposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 4
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(resolvedposts.length!=0){
+        returnCount['resolved'] =resolvedposts[0].posts.length
+      }else{
+        returnCount['resolved'] = 0
+      }
+      const reopenposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 5
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(reopenposts.length!=0){
+        returnCount['reopen'] =reopenposts[0].posts.length
+      }else{
+        returnCount['reopen'] = 0
+      }
+      const onholdposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 6
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(onholdposts.length!=0){
+        returnCount['onhold'] =onholdposts[0].posts.length
+      }else{
+        returnCount['onhold'] = 0
+      }
+      const invalidposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 7
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(invalidposts.length!=0){
+        returnCount['invalid'] =invalidposts[0].posts.length
+      }else{
+        returnCount['invalid'] = 0
+      }
+      const blockedposts = await  this.prismaService.user.findMany({
+        select:{
+          posts:{
+            select:{
+              id: true
+            },
+            where:{
+              statusId: 8
+            }
+          }
+        },
+        where:{
+          id: userid
+        }
+      });
+      if(blockedposts.length!=0){
+        returnCount['blocked'] =blockedposts[0].posts.length
+      }else{
+        returnCount['blocked'] = 0
+      }
+
+      return returnCount;
+
+    }
+
+    async getPostCountbyStatus(){
+     return  this.prismaService.status.findMany(
+        {
+          include:{
+            _count: {
+              select:{
+                posts: true
+              }
+            }
+          }
+        }
+      )
+    }
+
+    async getPostCount(){
+      return this.prismaService.post.count();
+    }
   
    async createPost(data: PostCreateDto): Promise<PostResponseDto> {
 
