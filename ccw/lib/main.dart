@@ -6,6 +6,8 @@ import 'package:ccw/screens/welcome.dart';
 import 'package:ccw/screens/home.dart';
 import 'package:ccw/screens/create_post.dart';
 import 'package:ccw/screens/profile/edit_profile.dart';
+import 'package:ccw/screens/servicesPage/helpandsupport.dart';
+
 
 
 // import 'package:firebase_core/firebase_core.dart';
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context) => HomePage(),
         CreatePost.id: (context) => CreatePost(),
         EditProfileWidget.id: (context) => EditProfileWidget(),
+        HelpAndSupport.id: (context) => HelpAndSupport(),
       },
     );
   }

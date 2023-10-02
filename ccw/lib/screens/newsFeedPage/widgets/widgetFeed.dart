@@ -4,9 +4,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ccw/screens/profile/edit_profile.dart';
+import 'package:ccw/screens/home.dart';
+import 'package:ccw/screens/servicesPage/routeservice.dart';
+import 'package:ccw/screens/servicesPage/helpandsupport.dart';
+import 'package:ccw/screens/feedback/feedbackScreen.dart';
+import 'package:ccw/screens/servicesPage/about.dart';
 
 
-Widget actionBarRow(BuildContext context) {return Row(
+
+
+class MenuModel {
+  String title;
+  String subtitle;
+  IconData icon;
+
+  MenuModel(this.title, this.subtitle, this.icon);
+}
+
+
+
+
+Widget actionBarRow(BuildContext context) {
+  
+  return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
@@ -37,10 +57,11 @@ Widget actionBarRow(BuildContext context) {return Row(
       
       GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditProfileWidget()),
-          );
+          _modalSideSheetMenu(context);
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => EditProfileWidget()),
+          // );
         },
         child: CircleAvatar(
           child: ClipOval(child: Image.network('https://www.w3schools.com/w3images/avatar3.png')),
@@ -51,6 +72,98 @@ Widget actionBarRow(BuildContext context) {return Row(
 
     ],
   );}
+
+  _modalSideSheetMenu(BuildContext context) {
+  int _selectedDrawerIndex = 0;
+  List<MenuModel> bottomMenuItems = <MenuModel>[
+    MenuModel('Profile', 'Edit your profile information', Icons.person),
+    MenuModel('Help', 'Get assistance and support', Icons.help),
+    MenuModel('RateUs', 'Rate our app on the store', Icons.star),
+    MenuModel('About', 'Learn more about our app', Icons.info),
+    MenuModel('SignOut', 'Sign out of your account', Icons.exit_to_app),
+        
+
+        
+        
+        ];
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 440.0,
+            color: Color(0xFF737373),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 320.0,
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: new BoxDecoration(
+                      color: Colors.white, //Color(0xFF737373),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: ListView.builder(
+                      itemCount: bottomMenuItems.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              color: Colors.teal[100],
+                            ),
+                            child: Icon(
+                              bottomMenuItems[index].icon,
+                              color: Colors.teal,
+                            ),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 15,
+                          ),
+                          title: Text(
+                            bottomMenuItems[index].title,
+                            style: TextStyle(color: Colors.teal, fontSize: 18),
+                          ),
+                          subtitle: Text(bottomMenuItems[index].subtitle),
+                          onTap: () {
+                            Navigator.pop(context);
+                            debugPrint(bottomMenuItems[index].title);
+                            debugPrint('$index');
+                            switch (index) {
+                              case 0:
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileWidget()) );
+                              case 1:
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) => HelpAndSupport()));
+                              case 2:
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) => UserFeedbackWidget()));
+                              case 3:
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) => AboutPage()));
+                              default:
+                                debugPrint(bottomMenuItems[index].title);
+                            }
+                            
+                          },
+                        );
+                      }),
+                ),
+
+                //SizedBox(height: 10),
+
+                Container(
+                    height: 60, width: 60,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    margin: EdgeInsets.symmetric(vertical: 30),
+                    child: GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(Icons.close,
+                            size: 25, color: Colors.grey[900]))),
+              ],
+            ),
+          );
+        });
+  }
 
 Widget searchTextField() {
   return Row(

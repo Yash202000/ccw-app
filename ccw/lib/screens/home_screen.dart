@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const TopScreenImage(screenImageName: 'ccw.png'),
+              const TopScreenImage(screenImageName: 'ccw-logo.png'),
               Expanded(
                 child: Padding(
                   padding:
