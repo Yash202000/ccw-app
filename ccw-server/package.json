@@ -5,9 +5,11 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@keycloak/keycloak-admin-client": "18.0.2",
     "@mui/icons-material": "^5.14.8",
-    "@mui/material": "^5.14.8",
+    "@mui/material": "^5.14.11",
     "@mui/styled-engine": "^5.14.11",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^3.0.0",
@@ -28,7 +30,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.1",
-    "react-router-dom": "6.11.2",
+    "react-router-dom": "^6.11.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"

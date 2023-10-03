@@ -1,4 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Complaint from '../pages/complaint/complaint';
 import Complaintinfo from '../pages/complaint/complaint';
 import AdminDashboard from '../pages/dashboard/dashboard';
 import styles from './app.module.css';
@@ -19,7 +20,8 @@ export function App() {
      
       <Routes>
       <Route path={'/'} element={<AdminDashboard />} />
-      <Route path={'/complaint'} element={<Complaintinfo />} />
+      <Route path="/complaint/:id" element={<Complaint />} />
+        
       </Routes>
       {/* END: routes */}
     </div>
