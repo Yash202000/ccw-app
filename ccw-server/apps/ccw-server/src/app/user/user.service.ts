@@ -240,7 +240,7 @@ export class UserService {
           id: userid
         }
     });
-    return allCountbyId;
+    return allCountbyId[0];
 
 }
 

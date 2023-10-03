@@ -7,6 +7,54 @@ export class PostService {
     private prismaService = new PrismaClient()
 
 
+    async getLatLangs(){
+
+      const latlangs = await this.prismaService.post.findMany({
+        select:{
+          latitude: true,
+          longitude: true
+        },
+        
+      });
+
+      const result = latlangs.map((value)=>{
+
+        return [value.latitude,value.longitude];
+      })
+      return result; 
+    }
+
+
+    getpostbyid(id:number){
+      return this.prismaService.post.findFirst({
+        include: {
+          _count: {
+            select:{
+              upvotes: true,
+              comments: true
+            }
+          },
+          status: {
+            select:{
+              name: true
+            }
+          },
+          author: {
+            select:{
+              id: true,
+              profile: true
+            }
+          }
+        },
+        where: {
+          id: id
+        }
+      });
+
+
+    }
+
+
     post(id: number): Promise<PostResponseDto | null> {
       return this.prismaService.post.findUnique({
         where: {
@@ -159,17 +207,7 @@ export class PostService {
     }
 
 
-    async getLatLangs(){
-
-      const latlangs = await this.prismaService.post.findMany({
-        select:{
-          latitude: true,
-          longitude: true
-        },
-        
-      });
-      return latlangs; 
-    }
+    
 
     async getallpostsCountbyStatusPerUser(userid: number){
       const openposts = await  this.prismaService.user.findMany({

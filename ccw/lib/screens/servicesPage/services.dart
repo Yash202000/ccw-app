@@ -55,13 +55,14 @@ class _ServicePageState extends State<ServicePage> {
           'Routing',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
+        automaticallyImplyLeading: false, // Disable the back button
         backgroundColor: Colors.grey[500],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
       ),
       body: SafeArea(
         child: Padding(

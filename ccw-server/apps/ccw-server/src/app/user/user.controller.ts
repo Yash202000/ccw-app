@@ -61,11 +61,11 @@ export class UserController {
 
     
     @ApiOperation({ summary: 'Get all count by id' })
-    @ApiParam({ name: 'id', type: 'string', description: 'Example ID: 1' })
+    @ApiParam({ name: 'userid', type: 'string', description: 'Example ID: 1' })
     @ApiResponse({ status: 200, description: 'Success' })
-    @Get('count/:id')
-    async getAllCount(@Param('id') id:number){
-        return this.userService.getAllCount(+id);
+    @Get('count/:userid')
+    async getAllCount(@Param('userid') userid:number){
+        return this.userService.getAllCount(+userid);
     }
 
    

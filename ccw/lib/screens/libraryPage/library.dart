@@ -9,12 +9,70 @@ import 'package:ccw/consts/env.dart' show backendUrl;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
+class CountCard extends StatelessWidget {
+  final String title;
+  final int count;
+  final IconData icon;
+  final Color color;
+
+  CountCard({
+    required this.title,
+    required this.count,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 3.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 40,
+              color: color,
+            ),
+            SizedBox(height: 10),
+            Text(
+              title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 5),
+            Text(
+              count.toString(),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class LibraryPage extends StatefulWidget {
+
+ 
+
   @override
   _LibraryPageState createState() => _LibraryPageState();
 }
 
 class _LibraryPageState extends State<LibraryPage> {
+   Map<String, dynamic> countData = {
+    '_count': {
+      'posts': 0,
+      'comments': 0,
+      'upvotes': 0,
+      'feedbacks': 0,
+    }
+  };
    List feedList = [];
   bool isVisible = false;
   List<Widget> newsFeedWidgetList=[];
@@ -28,10 +86,41 @@ class _LibraryPageState extends State<LibraryPage> {
   void initState() {
     super.initState();
     // Call the routing function when the widget is initialized
+    fetchData();
     _getPosts();
   }
 
 
+
+   Future<void> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userInfo = prefs.getString('userinfo');
+    if (userInfo != null) {
+      Map<String, dynamic> userInfoMap = json.decode(userInfo);
+      var userid = userInfoMap['id'];
+      final String apiUrl = "$backendUrl/api/user/count/$userid";
+      
+        try {
+        final response = await http.get(Uri.parse(apiUrl));
+
+        if (response.statusCode == 200) {
+            final jsonData = json.decode(response.body);
+            print(jsonData);
+            setState(() {
+            countData = jsonData;
+            });
+        } else {
+            // Handle error when API request fails
+            print('Failed to fetch data: ${response.statusCode}');
+        }
+        } catch (error) {
+        // Handle any exceptions that occur
+        print('Error fetching data: $error');
+        }
+    }
+
+    
+  }
   
   Future<void> _getPosts() async {
     if (isLoading) {
@@ -78,36 +167,67 @@ class _LibraryPageState extends State<LibraryPage> {
     }
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title:Text('Uploaded Issues',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black)),
-        centerTitle: false,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-      ),
+      // appBar: AppBar(
+      //   title:Text('Uploaded Issues',
+      //         style: TextStyle(
+      //             fontSize: 14,
+      //             fontWeight: FontWeight.normal,
+      //             color: Colors.black)),
+      //   centerTitle: false,
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Colors.white,
+      // ),
 
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            // Container(
-            //   margin: EdgeInsets.all(10),
-            //   child: Column(
-            //     children: <Widget>[
-            //       topSpace(),
-            //       searchTextField(),
-            //       topSpace(),
-            //       Container(height: 55, child: CategoryList()),
-            //     ],
+           
+            // Text(
+            //   'All Activities',
+            //   style: TextStyle(
+            //     fontSize: 18,
+            //     fontWeight: FontWeight.bold,
             //   ),
             // ),
+            // Count Cards
+              SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CountCard(
+                  title: 'Posts',
+                  count: countData['_count']['posts'] ?? 0,
+                  icon: Icons.description,
+                  color: Colors.blue,
+                ),
+                CountCard(
+                  title: 'Comments',
+                  count: countData['_count']['comments'] ?? 0,
+                  icon: Icons.comment,
+                  color: Colors.green,
+                ),
+                CountCard(
+                  title: 'Upvotes',
+                  count: countData['_count']['upvotes'] ?? 0,
+                  icon: Icons.thumb_up,
+                  color: Colors.orange,
+                ),
+                CountCard(
+                  title: 'Feedback',
+                  count: countData['_count']['feedbacks'] ?? 0,
+                  icon: Icons.feedback,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
             Expanded(
               child: Container(
                 color: Colors.white,

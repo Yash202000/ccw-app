@@ -19,12 +19,11 @@ export default class PostController {
     // getPostById(@Param('id') id: string): Promise<PostResponseDto> {
     //     return this.postService.post(+id);
     // }
-
-    @ApiOperation({ summary: 'Get all posts' })
-    @ApiResponse({ status: 200, description: 'Success', type: PostResponseDto })
-    @Get()
-    getallposts(): Promise<PostResponseDto[]> {
-        return this.postService.allpost();
+    @ApiOperation({ summary: 'Get all locations' })
+    @ApiResponse({ status: 200, description: 'Success',  })
+    @Get('/all-locations')
+    getallLocations()  {
+        return this.postService.getLatLangs();
     }
 
     @ApiOperation({ summary: 'get posts count' })
@@ -41,19 +40,11 @@ export default class PostController {
         return this.postService.getPostCountbyStatus();
     }
 
-    @ApiOperation({ summary: 'get posts status count for user' })
-    @ApiParam({ name: 'id', type: 'string', description: 'Example ID: 1' })
-    @ApiResponse({ status: 200, description: 'Success' })
-    @Get('status/count/:userid')
-    getallpostsCountbyStatusPerUser(@Param('userid') userid:number) {
-        return this.postService.getallpostsCountbyStatusPerUser(+userid);
-    }
-
-    @ApiOperation({ summary: 'Get all locations' })
-    @ApiResponse({ status: 200, description: 'Success',  })
-    @Get('/all-locations')
-    getallLocations()  {
-        return this.postService.getLatLangs();
+    @ApiOperation({ summary: 'Get all posts' })
+    @ApiResponse({ status: 200, description: 'Success', type: PostResponseDto })
+    @Get()
+    getallposts(): Promise<PostResponseDto[]> {
+        return this.postService.allpost();
     }
 
     @ApiOperation({ summary: 'Get posts' })
@@ -63,26 +54,8 @@ export default class PostController {
         return this.postService.posts({});
     }
 
-    // @ApiOperation({ summary: 'filter post by string' })
-    // @ApiResponse({ status: 200, description: 'Success', type: [PostResponseDto] })
-    // @Get('filtered-posts/:searchString')
-    // async getFilteredPosts(
-    //     @Param('searchString') searchString: string,
-    // ): Promise<PostResponseDto[]> {
-    //     return this.postService.posts({
-    //     where: {
-    //         OR: [
-    //         {
-    //             title: { contains: searchString },
-    //         },
-    //         {
-    //             content: { contains: searchString },
-    //         },
-    //         ],
-    //     },
-    //     });
-    // }
 
+    
     @ApiOperation({ summary: 'filter post by string' })
     @ApiResponse({ status: 200, description: 'Success', type: [PostResponseDto] })
     @Get('filtered-posts')
@@ -111,6 +84,49 @@ export default class PostController {
        
       }
 
+
+
+    @ApiOperation({ summary: 'Get all posts' })
+    @ApiResponse({ status: 200, description: 'Success', type: PostResponseDto })
+    @Get(':id')
+    getpostbyid(@Param('id') id:number): Promise<PostResponseDto> {
+        return this.postService.getpostbyid(+id);
+    }
+
+
+    
+
+    @ApiOperation({ summary: 'get posts status count for user' })
+    @ApiParam({ name: 'userid', type: 'string', description: 'Example ID: 1' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @Get('status/count/:userid')
+    getallpostsCountbyStatusPerUser(@Param('userid') userid:number) {
+        return this.postService.getallpostsCountbyStatusPerUser(+userid);
+    }
+
+    
+
+    
+
+    // @ApiOperation({ summary: 'filter post by string' })
+    // @ApiResponse({ status: 200, description: 'Success', type: [PostResponseDto] })
+    // @Get('filtered-posts/:searchString')
+    // async getFilteredPosts(
+    //     @Param('searchString') searchString: string,
+    // ): Promise<PostResponseDto[]> {
+    //     return this.postService.posts({
+    //     where: {
+    //         OR: [
+    //         {
+    //             title: { contains: searchString },
+    //         },
+    //         {
+    //             content: { contains: searchString },
+    //         },
+    //         ],
+    //     },
+    //     });
+    // }
 
 
 

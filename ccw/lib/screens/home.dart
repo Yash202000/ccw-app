@@ -9,6 +9,7 @@ import 'package:ccw/screens/custom/fab_bottom_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ccw/screens/create_post.dart';
 import 'package:ccw/screens/profile/edit_profile.dart';
+import 'package:ccw/screens/dashboard/dashboardscreen.dart';
 
 
 
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     switch (pos) {
       case 0:
+        // return DashboardWidget();
         return NewsFeed();
       case 1:
         return LibraryPage();
