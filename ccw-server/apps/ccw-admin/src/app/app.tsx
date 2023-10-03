@@ -1,9 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Complaintinfo from '../pages/complaint/complaint';
 import AdminDashboard from '../pages/dashboard/dashboard';
-import Login from '../pages/login/login';
+import PostPage from '../pages/post/PostPage';
 import styles from './app.module.css';
-
 import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
@@ -19,8 +18,8 @@ export function App() {
       
      
       <Routes>
-      <Route path={'/'} element={<Login />} />
-      <Route path={'/dashbord'} element={<AdminDashboard />} />
+      <Route path={'/'} element={<PostPage />} />
+      <Route path={'/dashboard'} element={<AdminDashboard />} />
       <Route path={'/complaint'} element={<Complaintinfo />} />
       </Routes>
       {/* END: routes */}

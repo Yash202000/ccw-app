@@ -8,9 +8,7 @@ const Complaintinfo = () => {
 
 
   return (
-    <div>
-        Complaint
-    </div>
+    <div>compalint</div>
    
   );
 };
