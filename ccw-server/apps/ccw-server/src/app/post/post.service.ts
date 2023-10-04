@@ -225,7 +225,7 @@ export class PostService {
           id: userid
         }
       });
-      let returnCount = {};
+      const returnCount = {};
       
       if(openposts.length!=0){
         returnCount['open'] = openposts[0].posts.length
@@ -395,14 +395,14 @@ export class PostService {
       return this.prismaService.post.count();
     }
   
-   async createPost(data: PostCreateDto): Promise<PostResponseDto> {
+  //  async createPost(data: PostCreateDto): Promise<PostResponseDto> {
 
-    // createPost(data: PostCreateDto,file): Promise<PostResponseDto> {
+    async createPost(data: PostCreateDto,file:Express.Multer.File): Promise<PostResponseDto> {
       
       //TODO : handle file upload to blob storage and get the imageurl for the post.
-      // const imageurl = data.file.filename;
-      const imageurl = 'test 1 file'
-      // console.log(imageurl);
+      const imageurl = file.originalname;
+      // const imageurl = 'test 1 file'
+      console.log(imageurl);
 
       const newPost = await this.prismaService.post.create({
         data:{

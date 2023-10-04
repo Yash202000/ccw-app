@@ -132,8 +132,8 @@ export default class PostController {
 
     @ApiOperation({ summary: 'Create post' })
     @ApiBody({ type: PostCreateDto })
-    // @ApiConsumes('multipart/form-data') // Specify the media type for file upload
-    // @UseInterceptors(FileInterceptor('file'))
+    @ApiConsumes('multipart/form-data') // Specify the media type for file upload
+    @UseInterceptors(FileInterceptor('file'))
     @ApiResponse({
         status: 201,
         description: 'Success',
@@ -143,24 +143,27 @@ export default class PostController {
     @Post()
     async createDraft(
         @Body() postData: PostCreateDto,
-        // @UploadedFile(
-        //     new ParseFilePipeBuilder()
-        //     .addFileTypeValidator({
-        //         fileType: '.(png|jpeg|jpg)',
-        //     },)
-        //     .addMaxSizeValidator({
-        //         maxSize: 1048576 //1Mb
-        //     })
-        //     .build({
-        //         errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-        //     }),
-        // )
-        // file: Express.Multer.File,
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+            .addFileTypeValidator({
+                fileType: '.(png|jpeg|jpg)',
+            },)
+            .addMaxSizeValidator({
+                maxSize: 1048576 //1Mb
+            })
+            .build({
+                errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+            }),
+        )
+        file: Express.Multer.File,
     ): Promise<PostResponseDto> {
         console.log(postData);
-        return this.postService.createPost(postData);
+        console.log('file uploaded is ');
+        console.log(file);
+
+        // return this.postService.createPost(postData);
       
-        // return this.postService.createPost(postData,file);
+        return this.postService.createPost(postData,file);
     }
 
 
