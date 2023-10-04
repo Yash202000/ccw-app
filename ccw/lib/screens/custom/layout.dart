@@ -1,22 +1,20 @@
-// creating facebook like emoji
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
-
 class AnchoredOverlay extends StatelessWidget {
-
   final bool showOverlay;
   final Widget Function(BuildContext, Offset anchor) overlayBuilder;
   final Widget child;
 
-  const AnchoredOverlay({ required this.showOverlay,required this.overlayBuilder,  required this.child });
+  const AnchoredOverlay({
+    required this.showOverlay,
+    required this.overlayBuilder,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
         return OverlayBuilder(
           showOverlay: showOverlay,
           overlayBuilder: (BuildContext overlayContext) {
@@ -26,14 +24,14 @@ class AnchoredOverlay extends StatelessWidget {
           },
           child: child,
         );
-      }),
+      },
     );
   }
 }
 
 class OverlayBuilder extends StatefulWidget {
   final bool showOverlay;
-  final Function(BuildContext) overlayBuilder;
+  final Widget Function(BuildContext) overlayBuilder;
   final Widget child;
 
   OverlayBuilder({
@@ -47,27 +45,27 @@ class OverlayBuilder extends StatefulWidget {
 }
 
 class _OverlayBuilderState extends State<OverlayBuilder> {
-  late OverlayEntry overlayEntry;
+  OverlayEntry? overlayEntry;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.showOverlay) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => showOverlay());
+      WidgetsBinding.instance!.addPostFrameCallback((_) => showOverlay());
     }
   }
 
   @override
   void didUpdateWidget(OverlayBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback((_) => syncWidgetAndOverlay());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => syncWidgetAndOverlay());
   }
 
   @override
   void reassemble() {
     super.reassemble();
-    WidgetsBinding.instance.addPostFrameCallback((_) => syncWidgetAndOverlay());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => syncWidgetAndOverlay());
   }
 
   @override
@@ -85,17 +83,17 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
     overlayEntry = OverlayEntry(
       builder: widget.overlayBuilder,
     );
-    addToOverlay(overlayEntry);
+    addToOverlay(overlayEntry!);
   }
 
   void addToOverlay(OverlayEntry entry) async {
     print('addToOverlay');
-    Overlay.of(context).insert(entry);
+    Overlay.of(context)!.insert(entry);
   }
 
   void hideOverlay() {
     print('hideOverlay');
-    overlayEntry.remove();
+    overlayEntry!.remove();
     overlayEntry = null;
   }
 
