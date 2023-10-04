@@ -39,23 +39,27 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
-  Future<List<dynamic>>? fetchMessages() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? userInfo = prefs.getString('userinfo');
-    if (userInfo != null) {
-      Map<String, dynamic> userInfoMap = json.decode(userInfo);
-      var userid = userInfoMap['id'];
-      final String apiUrl = "$backendUrl/api/log/$userid";
+Future<List<dynamic>> fetchMessages() async {
+  final prefs = await SharedPreferences.getInstance();
+  String? userInfo = prefs.getString('userinfo');
+  if (userInfo != null) {
+    Map<String, dynamic> userInfoMap = json.decode(userInfo);
+    var userid = userInfoMap['id'];
+    final String apiUrl = "$backendUrl/api/log/$userid";
 
-      final response = await http.get(Uri.parse(apiUrl));
+    final response = await http.get(Uri.parse(apiUrl));
 
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        throw Exception('Failed to load messages');
-      }
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load messages');
     }
   }
+  
+  // Return an empty list if userInfo is null or other conditions are not met
+  return [];
+}
+
 
   @override
   Widget build(BuildContext context) {
