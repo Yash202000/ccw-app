@@ -19,4 +19,13 @@ export class OrganizationService {
           data: createOrganizationDto,
         });
       }
+
+
+     async getProfile(id:number){
+      return this.prismaService.organization.findFirst({
+        where:{
+          id: id
+        }
+      });
+     }
 }

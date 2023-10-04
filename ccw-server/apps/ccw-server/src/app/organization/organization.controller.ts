@@ -35,6 +35,13 @@ export class OrganizationController {
     }
 
 
+    @ApiOperation({ summary: 'Get organization by id' })
+    @ApiResponse({ status: 200, description: 'Success', type: OrganizationResponseDto })    
+    @Get(':id')
+    async getUsers(@Param('id') id: string): Promise<OrganizationResponseDto>{
+        return this.organizationService.getProfile(+id);
+    }
+
     @ApiOperation({ summary: 'Create organization' })
     @ApiBody({ type: CreateOrganizationDto })
     @ApiResponse({

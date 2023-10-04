@@ -11,7 +11,7 @@ const Complaint = () => {
   useEffect(() => {
     const fetchComplaintDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.151.49:3000/api/post/${id}`);
+        const response = await fetch(`http://localhost:3000/api/post/${id}`);
         const data = await response.json();
         setComplaintDetails(data);
       } catch (error) {

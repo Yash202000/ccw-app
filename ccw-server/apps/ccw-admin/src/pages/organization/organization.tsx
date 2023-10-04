@@ -21,7 +21,7 @@ const OrganizationPage: React.FC = () => {
   // Comment this part to use dummy data
   // Replace 'apiUrl' with your actual API endpoint
   
-  /*const apiUrl = 'https://your-api-url.com/organization';
+  const apiUrl = 'https://localhost:3000/organization';
 
   useEffect(() => {
     // Fetch organization data from the API
@@ -40,29 +40,29 @@ const OrganizationPage: React.FC = () => {
     };
 
     fetchOrganizationData();
-  }, []);*/ // The empty dependency array ensures this effect runs once when the component mounts
+  }, []); // The empty dependency array ensures this effect runs once when the component mounts
   
 
   // Uncomment this part to use dummy data
-  useEffect(() => {
-    // Define your dummy organization data here
-    const dummyOrganization: OrganizationData = {
-      id: 1,
-      name: 'Example Organization',
-      email: 'info@example.com',
-      phoneNumber: '+1234567890',
-      address: '123 Main Street',
-      city: 'Sampleville',
-      postalCode: '12345',
-      countryCode: 'US',
-      stateCode: 'CA',
-      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_YT1HBTzGJutmrEriz9yUr0tRrXoeSzg74f7LHOh4qA&s', // Replace with actual logo URL
-      users: ['User1', 'User2', 'User3'], // Dummy user names
-    };
+  // useEffect(() => {
+  //   // Define your dummy organization data here
+  //   const dummyOrganization: OrganizationData = {
+  //     id: 1,
+  //     name: 'Example Organization',
+  //     email: 'info@example.com',
+  //     phoneNumber: '+1234567890',
+  //     address: '123 Main Street',
+  //     city: 'Sampleville',
+  //     postalCode: '12345',
+  //     countryCode: 'US',
+  //     stateCode: 'CA',
+  //     logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_YT1HBTzGJutmrEriz9yUr0tRrXoeSzg74f7LHOh4qA&s', // Replace with actual logo URL
+  //     users: ['User1', 'User2', 'User3'], // Dummy user names
+  //   };
 
-    // Set the organization state with the dummy data
-    setOrganization(dummyOrganization);
-  }, []);
+  //   // Set the organization state with the dummy data
+  //   setOrganization(dummyOrganization);
+  // }, []);
 
   return (
     <div className='content' >

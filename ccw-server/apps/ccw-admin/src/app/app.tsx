@@ -25,6 +25,7 @@ export function App() {
       <Route path={'/'} element={<AdminDashboard />} />
       <Route path="/complaint/:id" element={<Complaint />} />
       <Route path={'/mapLeaflet'} element={<MapWithCustomMarker />}/>
+      <Route path={'/organization'} element={<OrganizationPage />}/>
         
       </Routes>
       {/* END: routes */}

@@ -15,7 +15,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     // Fetch latitude and longitude data from your API
-    fetch('http://192.168.0.112:3000/api/post/all-locations')
+    fetch('http://localhost:3000/api/post/all-locations')
       .then((response) => response.json())
       .then((res)=>{setMarkers(res);})
       .catch((error) => {

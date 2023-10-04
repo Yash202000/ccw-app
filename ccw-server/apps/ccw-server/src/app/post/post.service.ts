@@ -225,7 +225,7 @@ export class PostService {
           id: userid
         }
       });
-      let returnCount = {};
+      const returnCount = {};
       
       if(openposts.length!=0){
         returnCount['open'] = openposts[0].posts.length

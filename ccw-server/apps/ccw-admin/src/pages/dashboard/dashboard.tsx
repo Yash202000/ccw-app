@@ -110,8 +110,8 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       try {
         const [complaintsResponse, countsResponse] = await Promise.all([
-          fetch('http://192.168.151.49:3000/api/post'),
-          fetch('http://192.168.151.49:3000/api/post/status/count'),
+          fetch('http://localhost:3000/api/post'),
+          fetch('http://localhost:3000/api/post/status/count'),
         ]);
 
        
