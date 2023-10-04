@@ -2,8 +2,9 @@
 import Complaint from '../pages/complaint/complaint';
 import Complaintinfo from '../pages/complaint/complaint';
 import AdminDashboard from '../pages/dashboard/dashboard';
+import OrganizationPage from '../pages/organization/organization';
+import PostPage from '../pages/post/PostPage';
 import styles from './app.module.css';
-
 import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
