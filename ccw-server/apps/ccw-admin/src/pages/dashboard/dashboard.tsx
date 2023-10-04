@@ -278,21 +278,29 @@ const AdminDashboard = () => {
             boxShadow: '0px 4px 8px rgba(1, 1, 1, 1.1)', // Shadow
             position: 'relative',
           }}
+
           onClick={() => {
             // Replace '/map' with the actual route or template URL you want to render
             navigate('/mapLeaflet');
           }}
         >
-          <img
-            src="../../assets/map.jpeg" // Replace with the actual path to your map image
-            alt="Map Image"
-            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
-            onError={(e) => {
-              // Handle image load errors (e.g., incorrect URL)
-              console.error('Error loading map image:', e);
-            }}
-          />
-          <RoomIcon style={{ color: '#fff', fontSize: '1rem', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+          Map
+        </IconButton>
+      </div>
+      <div style={{ position: 'absolute', bottom: '40px', left: '60px', zIndex: 1 }}>
+      <IconButton
+          style={{
+            borderRadius: '15%', // Circular shape
+            backgroundColor: '#00a5a5', // iOS Maps button color
+            padding: '15px', // Adjust the padding for your preferred size
+            boxShadow: '0px 4px 8px rgba(1, 1, 1, 1.1)', // Shadow
+            position: 'relative',
+          }}
+          onClick={() => {
+            navigate('/organization');
+          }}
+        >
+          Organizations
         </IconButton>
       </div>
 

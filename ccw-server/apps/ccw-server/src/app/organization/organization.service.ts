@@ -25,6 +25,22 @@ export class OrganizationService {
       return this.prismaService.organization.findFirst({
         where:{
           id: id
+        },
+        include:{
+          user:{
+            select:{
+              id: true,
+              email: false,
+              password: false,
+              profile:{
+                select:{
+                  firstName: true,
+                  LastName: true,
+                  avatar: true
+                }
+              }
+            }
+          }
         }
       });
      }

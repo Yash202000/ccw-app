@@ -12,57 +12,43 @@ interface OrganizationData {
   countryCode: string;
   stateCode: string;
   logoUrl: string;
-  users: string[];
+  user: string[];
 }
 
 const OrganizationPage: React.FC = () => {
   const [organization, setOrganization] = useState<OrganizationData | null>(null);
+  const [user, setUser] = useState([]);
 
   // Comment this part to use dummy data
   // Replace 'apiUrl' with your actual API endpoint
+  const fetchOrganizationData = async () => {
+    const apiUrl = 'http://localhost:3000/api/organization/1';
+    try {
+      const response = await fetch(apiUrl);
+      // console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+       
+        setOrganization(data);
+       
+        setUser(data.user);
+       
+        
+
+      } else {
+        console.error('Failed to fetch organization data');
+      }
+    } catch (error) {
+      console.error('Error fetching organization data:', error);
+    }
+  };
   
-  const apiUrl = 'https://localhost:3000/organization';
 
   useEffect(() => {
-    // Fetch organization data from the API
-    const fetchOrganizationData = async () => {
-      try {
-        const response = await fetch(apiUrl);
-        if (response.ok) {
-          const data = await response.json();
-          setOrganization(data);
-        } else {
-          console.error('Failed to fetch organization data');
-        }
-      } catch (error) {
-        console.error('Error fetching organization data:', error);
-      }
-    };
-
     fetchOrganizationData();
   }, []); // The empty dependency array ensures this effect runs once when the component mounts
   
 
-  // Uncomment this part to use dummy data
-  // useEffect(() => {
-  //   // Define your dummy organization data here
-  //   const dummyOrganization: OrganizationData = {
-  //     id: 1,
-  //     name: 'Example Organization',
-  //     email: 'info@example.com',
-  //     phoneNumber: '+1234567890',
-  //     address: '123 Main Street',
-  //     city: 'Sampleville',
-  //     postalCode: '12345',
-  //     countryCode: 'US',
-  //     stateCode: 'CA',
-  //     logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_YT1HBTzGJutmrEriz9yUr0tRrXoeSzg74f7LHOh4qA&s', // Replace with actual logo URL
-  //     users: ['User1', 'User2', 'User3'], // Dummy user names
-  //   };
-
-  //   // Set the organization state with the dummy data
-  //   setOrganization(dummyOrganization);
-  // }, []);
 
   return (
     <div className='content' >
@@ -84,8 +70,8 @@ const OrganizationPage: React.FC = () => {
           <h2>Users:</h2>
           {/* Display the list of organization users */}
           <ul>
-            {organization.users.map((user, index) => (
-              <li key={index}>{user}</li>
+            {user.map((user, index) => (
+              <li key={user.id}>{user.profile.firstName+' '+user.profile.LastName}</li>
             ))}
           </ul>
         </div>
