@@ -8,8 +8,6 @@ import 'dart:convert';
 import 'package:ccw/screens/newsFeedPage/widgets/feedBloc.dart';
 import 'package:location/location.dart' as locationService;
 
-
-
 class RouteServicePage extends StatefulWidget {
   final GptFeed feed;
 
@@ -20,25 +18,17 @@ class RouteServicePage extends StatefulWidget {
 }
 
 class _RouteServicePageState extends State<RouteServicePage> {
-
- final start = TextEditingController();
+  final start = TextEditingController();
   final end = TextEditingController();
   bool isVisible = false;
   var startv1;
   var startv2;
   var endv1;
   var endv2;
-  
+
   List<LatLng> routpoints = [LatLng(52.05884, -1.345583)];
 
-
-  @override
-  void initState()  {
-    super.initState();
-    _performRouting();
-  }
-
-   getLocation() async {
+  Future<locationService.LocationData?> getLocation() async {
     final location = locationService.Location();
     bool _serviceEnabled;
     locationService.PermissionStatus _permissionGranted;
@@ -47,30 +37,42 @@ class _RouteServicePageState extends State<RouteServicePage> {
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        return;
+        return null;
       }
     }
-
-    print(_serviceEnabled);
 
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == locationService.PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != locationService.PermissionStatus.granted) {
-        return;
+        return null;
       }
     }
 
-    print(_permissionGranted);
+    return await location.getLocation();
+  }
 
-    final locationData = await location.getLocation();
-    return locationData;
+  @override
+  void initState() {
+    super.initState();
+    // Call _performRouting in initState
+    _performRouting();
   }
 
   Future<void> _performRouting() async {
+    // Show loader while waiting for getLocation
+    setState(() {
+      isVisible = false;
+    });
 
-    locationService.LocationData locationData = await getLocation();
+    locationService.LocationData? locationData = await getLocation();
 
+    if (locationData == null) {
+      // Handle the case where locationData is null (permission denied, etc.)
+      print("here location data accessed");
+      print(locationData);
+      return;
+    }
 
     var v1 = locationData.latitude;
     var v2 = locationData.longitude;
@@ -92,7 +94,7 @@ class _RouteServicePageState extends State<RouteServicePage> {
         var long1 = reep.split(",");
         routpoints.add(LatLng(double.parse(lat1[1]), double.parse(long1[0])));
       }
-      isVisible = !isVisible;
+      isVisible = true;
       startv1 = v1;
       startv2 = v2;
       endv1 = v3;
@@ -104,8 +106,12 @@ class _RouteServicePageState extends State<RouteServicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Routing', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),backgroundColor: Colors.grey[500],
-      
+      appBar: AppBar(
+        title: Text(
+          'Routing',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        backgroundColor: Colors.grey[500],
         leading: IconButton(
           icon: Icon(Icons.arrow_back), // Add a back button icon
           onPressed: () {
@@ -114,7 +120,6 @@ class _RouteServicePageState extends State<RouteServicePage> {
           },
         ),
       ),
-      // backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -126,14 +131,15 @@ class _RouteServicePageState extends State<RouteServicePage> {
                   width: 400,
                   child: Visibility(
                     visible: isVisible,
-                    child: FlutterMap(options:
-                        MapOptions(
-                          center: routpoints[0],
-                          zoom: 10,
-                        ),
+                    child: FlutterMap(
+                      options: MapOptions(
+                        center: routpoints[0],
+                        zoom: 10,
+                      ),
                       nonRotatedChildren: [
-                        AttributionWidget.defaultWidget(source: 'OpenStreetMap contributors',
-                        onSourceTapped: null),
+                        AttributionWidget.defaultWidget(
+                            source: 'OpenStreetMap contributors',
+                            onSourceTapped: null),
                       ],
                       children: [
                         TileLayer(
@@ -143,7 +149,7 @@ class _RouteServicePageState extends State<RouteServicePage> {
                         PolylineLayer(
                           polylineCulling: false,
                           polylines: [
-                            Polyline(points: routpoints, color: Colors.blue, strokeWidth: 9)
+                            Polyline(points: routpoints, color: Colors.blue, strokeWidth: 9),
                           ],
                         ),
                         MarkerLayer(
