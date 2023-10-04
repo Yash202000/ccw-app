@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ccw/components/components.dart';
@@ -18,8 +19,13 @@ class _UserFeedbackWidgetState extends State<UserFeedbackWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('User Feedback'),
+        title: actionBarRow(context),
+        centerTitle: false,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

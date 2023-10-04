@@ -1,11 +1,17 @@
+import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('About Clean City Watch'),
+        title: actionBarRow(context),
+        centerTitle: false,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

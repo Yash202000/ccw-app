@@ -175,10 +175,12 @@ List<Widget> newsCommentWidgetList=[];
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Questions'),
+        title: actionBarRow(context),
+        centerTitle: false,
         elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
       ),
       body: SafeArea(

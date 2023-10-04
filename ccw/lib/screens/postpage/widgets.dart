@@ -241,7 +241,7 @@ Widget usernameSectionWithoutAvatar(BuildContext context,GptComment comment) {
                 )
               ],
             ),
-            moreOptions3Dots(context),
+            // moreOptions3Dots(context,comment),
           ],
         ),
       )

@@ -1,3 +1,4 @@
+import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -59,9 +60,13 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Incoming Messages'),
-        automaticallyImplyLeading: false, // Disable the back button
+        title: actionBarRow(context),
+        centerTitle: false,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),

@@ -121,7 +121,6 @@ class _RouteServicePageState extends State<RouteServicePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 10,),
                 SizedBox(
                   height: 700,
                   width: 400,

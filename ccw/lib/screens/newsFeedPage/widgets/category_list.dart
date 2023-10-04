@@ -1,4 +1,6 @@
+import 'package:ccw/screens/leadboard/leadboardscreen.dart';
 import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
+import 'package:ccw/screens/organization/listorganizationscreen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,7 +16,8 @@ class _CategoryListState extends State<CategoryList> {
 
   List<String> listCategory = [
     'All posts',
-    'Featured',
+    'Leadboard',
+    'Organizations'
   ];
 
   @override
@@ -27,6 +30,13 @@ class _CategoryListState extends State<CategoryList> {
             return GestureDetector(
               onTap: () {
                 debugPrint('${listCategory[index]} Tapped');
+                if(listCategory[index]=='Leadboard'){
+                   Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LeaderboardScreen()));
+                }else if (listCategory[index]=='Organizations'){
+                   Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => OrganizationListScreen())); 
+                }
               },
               child: Container(
                 padding: EdgeInsets.all(8),

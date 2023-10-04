@@ -80,6 +80,13 @@ export class UserService {
       }
     })
 
+    const green_coin = await this.prismaService.greenCoin.create({
+      data:{
+        userId: Number(user.id),
+        coins: 0
+      }
+    })
+
     return {
         id: user.id,
         email: user.email,

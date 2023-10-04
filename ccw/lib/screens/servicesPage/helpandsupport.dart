@@ -1,3 +1,4 @@
+import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:flutter/material.dart';
 
 class HelpAndSupport extends StatefulWidget {
@@ -12,8 +13,13 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Help and Support'),
+        title: actionBarRow(context),
+        centerTitle: false,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
       ),
       body: ListView(
         children: _data.map<Widget>((Item item) {

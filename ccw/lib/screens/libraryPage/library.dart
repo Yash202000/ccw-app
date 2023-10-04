@@ -172,20 +172,17 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title:Text('Uploaded Issues',
-      //         style: TextStyle(
-      //             fontSize: 14,
-      //             fontWeight: FontWeight.normal,
-      //             color: Colors.black)),
-      //   centerTitle: false,
-      //   elevation: 0,
-      //   automaticallyImplyLeading: false,
-      //   backgroundColor: Colors.white,
-      // ),
+       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: actionBarRow(context),
+        centerTitle: false,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+      ),
 
       body: SafeArea(
+        
         child: Column(
           children: <Widget>[
            
@@ -197,7 +194,7 @@ class _LibraryPageState extends State<LibraryPage> {
             //   ),
             // ),
             // Count Cards
-              SizedBox(height: 30),
+        
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -223,7 +220,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   title: 'Feedback',
                   count: countData['_count']['feedbacks'] ?? 0,
                   icon: Icons.feedback,
-                  color: Colors.red,
+                  color: const Color.fromARGB(255, 137, 136, 136),
                 ),
               ],
             ),

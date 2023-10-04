@@ -355,10 +355,10 @@ _onCenterBottomMenuOn3DotsPressed(BuildContext context) {
 Widget _buildBottomNavMenu(BuildContext context) {
 
   List<Menu3DotsModel> listMore = [];
-  listMore.add(Menu3DotsModel('Hide <Post type>', 'See fewer posts like this', Icons.block));
+  listMore.add(Menu3DotsModel('Hide Post', 'See fewer posts like this', Icons.block));
   listMore.add(Menu3DotsModel('Unfollow <username>', 'See fewer posts like this', Icons.person_add));
-  listMore.add(Menu3DotsModel('Report <Post type>', 'See fewer posts like this', Icons.info));
-  listMore.add(Menu3DotsModel('Copy <Post type> link', 'See fewer posts like this', Icons.insert_link));
+  listMore.add(Menu3DotsModel('Report Post', 'See fewer posts like this', Icons.info));
+  listMore.add(Menu3DotsModel('Copy Post link', 'See fewer posts like this', Icons.insert_link));
 
 
   return Container(

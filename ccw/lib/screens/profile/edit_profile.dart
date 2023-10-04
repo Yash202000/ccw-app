@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ccw/components/components.dart';
@@ -147,9 +148,14 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
+       backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: actionBarRow(context),
+          centerTitle: false,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+        ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

@@ -1,3 +1,4 @@
+import 'package:ccw/screens/newsFeedPage/widgets/widgetFeed.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -11,7 +12,7 @@ class ServicePage extends StatefulWidget {
 }
 
 class _ServicePageState extends State<ServicePage> {
-  List<LatLng> routePoints = [LatLng( 21.1458004, 79.0881546)];
+  List<LatLng> routePoints = [LatLng( 18.516726, 73.856255)];
   List<Marker> dynamicMarkers = []; // List to store dynamic markers
 
   @override
@@ -25,9 +26,10 @@ class _ServicePageState extends State<ServicePage> {
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
+        print(data);
         dynamicMarkers = data.map((location) {
-          final double latitude = location['latitude'];
-          final double longitude = location['longitude'];
+          final double latitude = location[0];
+          final double longitude = location[1];
           return Marker(
             width: 50.0,
             height: 50.0,
@@ -50,29 +52,31 @@ class _ServicePageState extends State<ServicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          'Routing',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-        ),
-        automaticallyImplyLeading: false, // Disable the back button
-        backgroundColor: Colors.grey[500],
+        title: actionBarRow(context),
+        centerTitle: false,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+      ),
+         // Disable the back button
+       
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back),
         //   onPressed: () {
         //     Navigator.pop(context);
         //   },
         // ),
-      ),
+      
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 10),
                 SizedBox(
-                  height: 700,
+                  height: 620,
                   width: 400,
                   child: FlutterMap(
                     options: MapOptions(

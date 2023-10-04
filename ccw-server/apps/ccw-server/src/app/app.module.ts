@@ -11,6 +11,12 @@ import { CommentModule } from './comment/comment.module';
 import { UpvoteModule } from './upvote/upvote.module';
 import { LogController } from './log/log.controller';
 import { LogService } from './log/log.service';
+import { GreenCoinController } from './green-coin/green-coin.controller';
+import { LeadboardController } from './leadboard/leadboard.controller';
+import { LeadboardService } from './leadboard/leadboard.service';
+import { GreenCoinService } from './green-coin/green-coin.service';
+import { OrganizationController } from './organization/organization.controller';
+import { OrganizationService } from './organization/organization.service';
 
 @Module({
   imports: [
@@ -22,7 +28,19 @@ import { LogService } from './log/log.service';
     CommentModule,
     UpvoteModule,
   ],
-  controllers: [AppController, LogController],
-  providers: [AppService, LogService],
+  controllers: [
+    AppController,
+    LogController,
+    GreenCoinController,
+    LeadboardController,
+    OrganizationController,
+  ],
+  providers: [
+    AppService,
+    LogService,
+    LeadboardService,
+    GreenCoinService,
+    OrganizationService,
+  ],
 })
 export class AppModule {}

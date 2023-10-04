@@ -78,18 +78,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       bottomNavigationBar: FABBottomAppBar(
         centerItemText: '',
         backgroundColor: (Colors.black54),
-        color: (Colors.grey[700])!,
+        color: (Color.fromARGB(255, 177, 177, 177))!,
         selectedColor: Theme.of(context).colorScheme.secondary,
         notchedShape: CircularNotchedRectangle(),
         iconSize: 20.0,
         onTabSelected: _selectedTab,
         items: [
-          FABBottomAppBarItem(iconData: FontAwesomeIcons.listAlt, text: 'Feed'),
-          FABBottomAppBarItem(iconData: FontAwesomeIcons.book, text: 'Requests'),
+          FABBottomAppBarItem(iconData: FontAwesomeIcons.listAlt, text: 'Home'),
+          FABBottomAppBarItem(iconData: FontAwesomeIcons.book, text: 'Activity'),
           FABBottomAppBarItem(
-              iconData: FontAwesomeIcons.comments, text: 'Messages'),
+              iconData: FontAwesomeIcons.comments, text: 'Updates'),
           FABBottomAppBarItem(
-              iconData: FontAwesomeIcons.businessTime, text: 'Services'),
+              iconData: FontAwesomeIcons.businessTime, text: 'Explore'),
         ],
       ),
     );
