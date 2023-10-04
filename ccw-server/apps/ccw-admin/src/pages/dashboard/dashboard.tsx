@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Button, Tabs, Tab, Badge, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-
+import RoomIcon from '@mui/icons-material/Room';
+import IconButton from '@mui/material/IconButton';
 
 const ComplaintTable = ({ complaints }) => {
   return (
@@ -109,8 +110,8 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       try {
         const [complaintsResponse, countsResponse] = await Promise.all([
-          fetch('http://192.168.0.112:3000/api/post'),
-          fetch('http://192.168.0.112:3000/api/post/status/count'),
+          fetch('http://192.168.151.49:3000/api/post'),
+          fetch('http://192.168.151.49:3000/api/post/status/count'),
         ]);
 
        
@@ -151,13 +152,13 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div style={{ textAlign: 'center', paddingTop: '20px', backgroundColor: '#cce6ff' }}>
+    <div style={{ textAlign: 'center',height:'25px', paddingTop: '1px',backgroundColor: '#00a5a5' }}>
       {/* Top Half: Status Tabs */}
-      <Grid container spacing={2} style={{ background: '#b3d9ff', padding: '10px' }}>
+      <Grid container spacing={2} style={{ background: '#00a5a5', padding: '10px' }}>
       <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 3)}
             sx={{ marginBottom: '10px' }}
           >
@@ -169,7 +170,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 1)}
             sx={{ marginBottom: '10px' }}
           >
@@ -182,7 +183,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 4)}
             sx={{ marginBottom: '10px' }}
           >
@@ -194,7 +195,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 5)}
             sx={{ marginBottom: '10px' }}
           >
@@ -206,7 +207,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 6)}
             sx={{ marginBottom: '10px' }}
           >
@@ -218,7 +219,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 7)}
             sx={{ marginBottom: '10px' }}
           >
@@ -230,7 +231,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 8)}
             sx={{ marginBottom: '10px' }}
           >
@@ -242,7 +243,7 @@ const AdminDashboard = () => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={() => handleChangeTab(null, 9)}
             sx={{ marginBottom: '10px' }}
           >
@@ -264,7 +265,39 @@ const AdminDashboard = () => {
       {/* <div style={{ marginTop: '20px' }}>
         <img src={LogoImage} alt="Logo" style={{ width: '200px', height: 'auto' }} />
       </div> */}
+      
+
+
+      {/* Bottom Right Corner: Map Button */}
+      <div style={{ position: 'absolute', bottom: '40px', right: '60px', zIndex: 1 }}>
+        <IconButton
+          style={{
+            borderRadius: '15%', // Circular shape
+            backgroundColor: '#00a5a5', // iOS Maps button color
+            padding: '15px', // Adjust the padding for your preferred size
+            boxShadow: '0px 4px 8px rgba(1, 1, 1, 1.1)', // Shadow
+            position: 'relative',
+          }}
+          onClick={() => {
+            // Replace '/map' with the actual route or template URL you want to render
+            navigate('/mapLeaflet');
+          }}
+        >
+          <img
+            src="../../assets/map.jpeg" // Replace with the actual path to your map image
+            alt="Map Image"
+            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+            onError={(e) => {
+              // Handle image load errors (e.g., incorrect URL)
+              console.error('Error loading map image:', e);
+            }}
+          />
+          <RoomIcon style={{ color: '#fff', fontSize: '1rem', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+        </IconButton>
+      </div>
+
     </div>
+    
   );
 };
 
