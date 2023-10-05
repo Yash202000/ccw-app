@@ -1,3 +1,6 @@
+import 'package:ccw/components/components.dart';
+import 'package:ccw/screens/profile/edit_profile.dart';
+import 'package:ccw/screens/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:ccw/screens/postpage/widgets.dart';
 import 'package:ccw/screens/newsFeedPage/widgets/feedBloc.dart';
@@ -124,6 +127,19 @@ List<Widget> newsCommentWidgetList=[];
               if (response.statusCode == 201) {
                 // Comment successfully posted, you can handle the response accordingly
                 print('Comment posted successfully');
+                signUpAlert(
+                  onPressed: () async {
+                  print('back to the feeds page');
+                  Navigator.popAndPushNamed(
+                          context, EditProfileWidget.id);
+                      Navigator.pushNamed(context, WelcomeScreen.id);
+                  },
+                  title: 'Comment Upload',
+                  desc:
+                      'Comment posted successfully!',
+                  btnText: 'Feed Now',
+                  context: context,
+              ).show();
               } else {
                 // Handle the error if the request fails
                 print('Failed to post comment');
