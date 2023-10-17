@@ -183,7 +183,7 @@ class _CreatePostState extends State<CreatePost> {
               ),
               selectedImage != null
                   ? Image.asset(
-                      'assets/images/icons/facebook.png', // Replace with your image path
+                      'assets/images/garbeg.jpg', // Replace with your image path
                       height: 200,
                     )
                   // Image.file(
